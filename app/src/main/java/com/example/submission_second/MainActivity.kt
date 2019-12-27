@@ -9,8 +9,9 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.submission_second.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.fragment_detail_league.*
 
-class MainActivity : AppCompatActivity(),TempToolbarTitleListener {
+class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
     override fun updateTitle(title: String) {
         binding.mainToolbar.title = title
     }
@@ -24,7 +25,6 @@ class MainActivity : AppCompatActivity(),TempToolbarTitleListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupToolbar()
-
     }
 
     private fun setupToolbar() {
@@ -41,8 +41,19 @@ class MainActivity : AppCompatActivity(),TempToolbarTitleListener {
         if (shouldShow) toolbar.visibility = View.VISIBLE else toolbar.visibility = View.GONE
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        when (navController.currentDestination?.id) {
+            R.id.detailLeagueFragment -> navController.navigate(R.id.homeClub)
+            else -> {
+                navController.navigateUp()
+            }
+        }
+        return true
+    }
+
     override fun onBackPressed() {
         when (navController.currentDestination?.id) {
+            R.id.detailLeagueFragment -> navController.navigate(R.id.homeClub)
             else -> {
                 navController.navigateUp()
             }

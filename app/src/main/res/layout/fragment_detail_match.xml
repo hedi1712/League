@@ -5,19 +5,35 @@
 
     <data>
 
+        <variable
+            name="adapter"
+            type="com.example.submission_second.adapter.RecyclerViewNextmatchAdapter" />
+
+        <variable
+            name="model"
+            type="com.example.submission_second.model.model.next_match.NextMatchResponse.Event" />
     </data>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
-            style="@style/CardView.Dark"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:cardBackgroundColor="@color/red"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="10dp"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@drawable/shape"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".DetailMatchFragment">
@@ -26,8 +42,6 @@
                     android:id="@+id/imageView"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
                     android:src="@drawable/english_premier_league"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -39,8 +53,6 @@
                     android:id="@+id/imageView2"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
                     android:src="@drawable/english_premier_league"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_begin="206dp" />
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -62,8 +74,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:text="English Premier League"
-                    android:textColor="@color/white"
+                    android:text="@{model.strLeague}"
+                    android:textColor="@color/black"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                     app:layout_constraintStart_toStartOf="parent"
@@ -74,8 +86,8 @@
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{model.intAwayScore}"
                     android:textColor="@color/white"
-                    android:text="5"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -86,8 +98,8 @@
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{model.intHomeScore}"
                     android:textColor="@color/white"
-                    android:text="1"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                     app:layout_constraintEnd_toStartOf="@+id/imageView2"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -95,25 +107,25 @@
 
                 <TextView
                     android:id="@+id/textView7"
-                    android:textColor="@color/white"
                     style="@style/TextAppearance.AppCompat.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="2014-12-29"
+                    android:text="@{model.dateEvent}"
+                    android:textColor="@color/black"
                     android:textSize="8sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                 <TextView
                     android:id="@+id/textView8"
-                    android:textColor="@color/white"
                     style="@style/TextAppearance.AppCompat.Body2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
-                    android:text="20:00:00+00:00"
+                    android:text="@{model.strTime}"
+                    android:textColor="@color/black"
                     android:textSize="8sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView7"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -123,26 +135,36 @@
                 <TextView
                     android:id="@+id/tvTeamAway"
                     style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="arsenal"
-                    android:textColor="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:text="@{model.strHomeTeam}"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintHorizontal_bias="0.4"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    tools:text="Arsenal" />
 
                 <TextView
                     android:id="@+id/tvTeamHome"
                     style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="liverpool"
-                    android:textColor="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:text="@{model.strAwayTeam}"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                    tools:text="Manchester United" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

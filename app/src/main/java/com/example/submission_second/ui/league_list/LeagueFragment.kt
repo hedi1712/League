@@ -67,8 +67,8 @@ class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedLis
         goToDetailLeague(idLeague,strLeague)
     }
 
-    private fun goToDetailLeague(idLeague: String, strLeague: String) {
-        val action = LeagueFragmentDirections.actionLaunchTodetailLeagueFragment(idLeague,strLeague)
+    private fun goToDetailLeague(idLeague: String, leagueName: String) {
+        val action = LeagueFragmentDirections.actionLaunchTodetailLeagueFragment(idLeague,leagueName)
         findNavController().navigate(action)
     }
 

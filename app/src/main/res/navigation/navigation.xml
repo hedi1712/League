@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_home_club" >
         <action
             android:id="@+id/actionLaunchTodetailLeagueFragment"
-            app:destination="@id/detailLeagueFragment" />
+            app:destination="@id/detailLeagueFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/detailLeagueFragment"
@@ -26,9 +30,15 @@
             android:name="idTitleLeague"
             app:argType="string"
             android:defaultValue="null" />
+        <action
+            android:id="@+id/actionLaunchDetailLeaguetoDetailMatch"
+            app:destination="@id/detailMatch" />
+        <action
+            android:id="@+id/actionLaunchDetailLeagueToSearchView"
+            app:destination="@+id/searchView" />
     </fragment>
     <fragment
-        android:id="@+id/nextMatchFragment"
+        android:id="@+id/detailMatch"
         android:name="com.example.submission_second.ui.next_match.NextMatchFragment"
         android:label="fragment_next_match"
         tools:layout="@layout/fragment_next_match" />
@@ -38,9 +48,18 @@
         android:label="fragment_previous_match"
         tools:layout="@layout/fragment_previous_match" />
     <fragment
-        android:id="@+id/detailMatchFragment"
+        android:id="@+id/nextMatch"
         android:name="com.example.submission_second.DetailMatchFragment"
         android:label="fragment_detail_match"
         tools:layout="@layout/fragment_detail_match" />
+    <fragment
+        android:id="@+id/searchView"
+        android:name="com.example.submission_second.SearchView"
+        android:label="fragment_search_view"
+        tools:layout="@layout/fragment_search_view" >
+        <action
+            android:id="@+id/actionLaunchSearchViewToDetailMatch"
+            app:destination="@id/detailMatch" />
+    </fragment>
 
 </navigation>

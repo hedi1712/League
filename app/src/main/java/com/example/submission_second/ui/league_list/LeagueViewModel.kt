@@ -21,7 +21,6 @@ class LeagueViewModel : ViewModel() {
     val getData: LiveData<LeagueListResponse>
         get() = _getData
 
-
     fun getLeagueData() {
         mCompositeDisposable.add(
             networkConfig.apiService().getAllLeagueData().subscribeOn(Schedulers.io())

@@ -54,7 +54,7 @@
         tools:layout="@layout/fragment_detail_match" />
     <fragment
         android:id="@+id/searchView"
-        android:name="com.example.submission_second.SearchView"
+        android:name="com.example.submission_second.SearchViewFragment"
         android:label="fragment_search_view"
         tools:layout="@layout/fragment_search_view" >
         <action

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.submission_second.databinding.FragmentDetailLeagueBinding
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
@@ -115,10 +116,21 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
     }
 
     override fun onPressed(model: NextMatchResponse.Event, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        goToDetail(model.idEvent)
     }
 
     override fun onPressed(model: PreviousMatchResponse.PreviousMatchData, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        goToDetail(model.idEvent)
     }
+
+    private fun goToDetail(leagueId: String) {
+        val action = DetailLeagueFragmentDirections.actionLaunchDetailLeaguetoDetailMatch(leagueId)
+        findNavController().navigate(action)
+    }
+
+    fun goToDetailAll(leagueId: String) {
+        val action = DetailLeagueFragmentDirections.actionLaunchDetailLeaguetoDetailMatch(leagueId)
+        findNavController().navigate(action)
+    }
+
 }

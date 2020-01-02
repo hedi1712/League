@@ -17,6 +17,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionActionLaunchSearchView"
+            app:destination="@id/searchView" />
     </fragment>
     <fragment
         android:id="@+id/detailLeagueFragment"
@@ -33,15 +36,17 @@
         <action
             android:id="@+id/actionLaunchDetailLeaguetoDetailMatch"
             app:destination="@id/detailMatch" />
-        <action
-            android:id="@+id/actionLaunchDetailLeagueToSearchView"
-            app:destination="@+id/searchView" />
     </fragment>
     <fragment
         android:id="@+id/detailMatch"
         android:name="com.example.submission_second.ui.next_match.NextMatchFragment"
         android:label="fragment_next_match"
-        tools:layout="@layout/fragment_next_match" />
+        tools:layout="@layout/fragment_next_match" >
+        <argument
+            android:name="leagueId"
+            app:argType="string"
+            android:defaultValue="null" />
+    </fragment>
     <fragment
         android:id="@+id/previousMatch"
         android:name="com.example.submission_second.ui.previous_match.PreviousMatch"
@@ -58,7 +63,7 @@
         android:label="fragment_search_view"
         tools:layout="@layout/fragment_search_view" >
         <action
-            android:id="@+id/actionLaunchSearchViewToDetailMatch"
+            android:id="@+id/actionLaunchToDetailMatch"
             app:destination="@id/detailMatch" />
     </fragment>
 

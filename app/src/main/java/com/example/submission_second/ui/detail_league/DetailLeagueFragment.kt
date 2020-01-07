@@ -50,7 +50,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         arguments?.let {
             leagueId = DetailLeagueFragmentArgs.fromBundle(it).idLeague
             leagueName = DetailLeagueFragmentArgs.fromBundle(it).idTitleLeague
-            (activity as AppCompatActivity).supportActionBar!!.setTitle(leagueName)
+            (activity as AppCompatActivity).supportActionBar!!.title = leagueName
         }
         storeLeagueId(leagueId)
         viewModel.getDataLeague.observe(this, Observer {

@@ -38,7 +38,7 @@
                 android:background="@drawable/shape"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".DetailMatchFragment">
+                tools:context=".ui.detail_match.DetailMatchFragment">
 
                 <ImageView
                     android:id="@+id/imageView"

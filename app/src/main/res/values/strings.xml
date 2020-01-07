@@ -6,5 +6,6 @@
     <string name="next_match">Next Match</string>
     <string name="previous_match">Previous Match</string>
     <string name="find_match">Find Match</string>
+    <string name="line_up">Line Up</string>
 
 </resources>

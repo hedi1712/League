@@ -3,7 +3,7 @@ package com.example.submission_second.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.submission_second.databinding.FragmentDetailMatchBinding
+import com.example.submission_second.databinding.ListNextMatchBinding
 import com.example.submission_second.model.model.next_match.NextMatchResponse
 
 class RecyclerViewNextmatchAdapter(
@@ -12,7 +12,7 @@ class RecyclerViewNextmatchAdapter(
 ) :
     RecyclerView.Adapter<RecyclerViewNextmatchAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: FragmentDetailMatchBinding) :
+    class ViewHolder(val binding: ListNextMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(model: NextMatchResponse.Event, position: Int, listerner: OnNextMatchPressed) {
             binding.model = model
@@ -34,7 +34,7 @@ class RecyclerViewNextmatchAdapter(
         viewType: Int
     ): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = FragmentDetailMatchBinding.inflate(layoutInflater, parent, false)
+        val binding = ListNextMatchBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 

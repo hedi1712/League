@@ -22,7 +22,6 @@ class RecyclerViewNextmatchAdapter(
 
             }
         }
-
     }
 
     interface OnNextMatchPressed {
@@ -47,6 +46,5 @@ class RecyclerViewNextmatchAdapter(
     fun refreshData(nextmatch: List<NextMatchResponse.Event>) {
         this.nextmatch = nextmatch
         notifyDataSetChanged()
-
     }
 }

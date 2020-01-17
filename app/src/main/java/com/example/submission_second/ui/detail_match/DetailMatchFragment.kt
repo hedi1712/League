@@ -46,7 +46,6 @@ class DetailMatchFragment : Fragment() {
                 refreshData(it[0])
             }
         })
-
     }
 
     private fun refreshData(response: DetailMatchResponse.DetailMatchData) {

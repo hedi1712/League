@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PreviousMatchResponse(
     @SerializedName("events")
-    val events: List<PreviousMatchData>
+    val events: List<PreviousMatchData> ?= null
 ) {
     data class PreviousMatchData(
         @SerializedName("dateEvent")

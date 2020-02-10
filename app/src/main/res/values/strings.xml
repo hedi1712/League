@@ -5,5 +5,8 @@
     <string name="tvAllMatch">All Match</string>
     <string name="next_match">Next Match</string>
     <string name="previous_match">Previous Match</string>
+    <string name="find_match">Find Match</string>
+    <string name="line_up">Line Up</string>
+    <string name="null_or_empty">Maaf Data yang anda pilih tidak dapat dimuat saat ini</string>
 
 </resources>

@@ -1,14 +1,16 @@
 package com.example.submission_second.ui.detail_league
 
-import android.util.EventLog
+import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.submission_second.R
 import com.example.submission_second.model.model.league_detail.LeagueDetailData
 import com.example.submission_second.model.model.league_detail.LeagueDetailResponse
 import com.example.submission_second.model.model.next_match.NextMatchResponse
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
 import com.example.submission_second.module.NetworkConfig
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
@@ -26,16 +28,20 @@ class DetailViewModel : ViewModel() {
     val getNextMatch: LiveData<List<NextMatchResponse.Event>>
         get() = _getNextMatch
 
-    private val _getPreviousMatch = MutableLiveData<List<PreviousMatchResponse.PreviousMatchData>>()
+    private val _getPreviousMatch =
+        MutableLiveData<List<PreviousMatchResponse.PreviousMatchData>>()
     val getPreviousMatch: LiveData<List<PreviousMatchResponse.PreviousMatchData>>
         get() = _getPreviousMatch
 
     fun getDetailLeagueData(leagueId: String) {
         mCompositeDisposable.add(
-            networkConfig.apiService().getDetailLeagueWithId(leagueId).subscribeOn(Schedulers.io())
+            networkConfig.apiService().getDetailLeagueWithId(leagueId)
+                .doOnSubscribe { ProgressBar.VISIBLE }
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<LeagueDetailResponse>() {
                     override fun onNext(response: LeagueDetailResponse) {
+                        ProgressBar.INVISIBLE
                         setResultLeagueList(response.leagues)
                     }
 
@@ -51,11 +57,14 @@ class DetailViewModel : ViewModel() {
 
     fun getNextMatchData(leagueId: String) {
         mCompositeDisposable.add(
-            networkConfig.apiService().getNextMatchWithId(leagueId).subscribeOn(Schedulers.io())
+            networkConfig.apiService().getNextMatchWithId(leagueId)
+                .doOnSubscribe { ProgressBar.VISIBLE }
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<NextMatchResponse>() {
                     override fun onNext(response: NextMatchResponse) {
-                        listNextMatch(response.events)
+                        ProgressBar.INVISIBLE
+                        response.events?.let { listNextMatch(it) }
                     }
 
                     override fun onComplete() {
@@ -72,6 +81,7 @@ class DetailViewModel : ViewModel() {
     fun getPreviousMatch(leagueId: String) {
         mCompositeDisposable.add(
             networkConfig.apiService().getPreviousMatchWithId(leagueId)
+                .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<PreviousMatchResponse>() {
@@ -80,7 +90,8 @@ class DetailViewModel : ViewModel() {
                     }
 
                     override fun onNext(response: PreviousMatchResponse) {
-                        listPreviousMatch(response.events)
+                        ProgressBar.INVISIBLE
+                        response.events?.let { listPreviousMatch(it) }
                     }
 
                     override fun onError(e: Throwable) {

@@ -1,17 +1,19 @@
-package com.example.submission_second.model.model.previous_match
+package com.example.submission_second.model.model.detail_match
 
 
 import com.google.gson.annotations.SerializedName
 
-data class PreviousMatchResponse(
+data class DetailMatchResponse(
     @SerializedName("events")
-    val events: List<PreviousMatchData> ?= null
+    val detailMatchData: List<DetailMatchData>
 ) {
-    data class PreviousMatchData(
+    data class DetailMatchData(
         @SerializedName("dateEvent")
         val dateEvent: String,
         @SerializedName("dateEventLocal")
-        val dateEventLocal: String,
+        val dateEventLocal: Any,
+        @SerializedName("idAPIfootball")
+        val idAPIfootball: Any,
         @SerializedName("idAwayTeam")
         val idAwayTeam: String,
         @SerializedName("idEvent")
@@ -21,7 +23,7 @@ data class PreviousMatchResponse(
         @SerializedName("idLeague")
         val idLeague: String,
         @SerializedName("idSoccerXML")
-        val idSoccerXML: Any,
+        val idSoccerXML: String,
         @SerializedName("intAwayScore")
         val intAwayScore: String,
         @SerializedName("intAwayShots")
@@ -37,23 +39,23 @@ data class PreviousMatchResponse(
         @SerializedName("strAwayFormation")
         val strAwayFormation: Any,
         @SerializedName("strAwayGoalDetails")
-        val strAwayGoalDetails: Any,
+        val strAwayGoalDetails: String,
         @SerializedName("strAwayLineupDefense")
-        val strAwayLineupDefense: Any,
+        val strAwayLineupDefense: String,
         @SerializedName("strAwayLineupForward")
-        val strAwayLineupForward: Any,
+        val strAwayLineupForward: String,
         @SerializedName("strAwayLineupGoalkeeper")
-        val strAwayLineupGoalkeeper: Any,
+        val strAwayLineupGoalkeeper: String,
         @SerializedName("strAwayLineupMidfield")
-        val strAwayLineupMidfield: Any,
+        val strAwayLineupMidfield: String,
         @SerializedName("strAwayLineupSubstitutes")
-        val strAwayLineupSubstitutes: Any,
+        val strAwayLineupSubstitutes: String,
         @SerializedName("strAwayRedCards")
-        val strAwayRedCards: Any,
+        val strAwayRedCards: String,
         @SerializedName("strAwayTeam")
         val strAwayTeam: String,
         @SerializedName("strAwayYellowCards")
-        val strAwayYellowCards: Any,
+        val strAwayYellowCards: String,
         @SerializedName("strBanner")
         val strBanner: Any,
         @SerializedName("strCircuit")
@@ -63,7 +65,7 @@ data class PreviousMatchResponse(
         @SerializedName("strCountry")
         val strCountry: Any,
         @SerializedName("strDate")
-        val strDate: Any,
+        val strDate: String,
         @SerializedName("strDescriptionEN")
         val strDescriptionEN: Any,
         @SerializedName("strEvent")
@@ -77,23 +79,23 @@ data class PreviousMatchResponse(
         @SerializedName("strHomeFormation")
         val strHomeFormation: Any,
         @SerializedName("strHomeGoalDetails")
-        val strHomeGoalDetails: Any,
+        val strHomeGoalDetails: String,
         @SerializedName("strHomeLineupDefense")
-        val strHomeLineupDefense: Any,
+        val strHomeLineupDefense: String,
         @SerializedName("strHomeLineupForward")
-        val strHomeLineupForward: Any,
+        val strHomeLineupForward: String,
         @SerializedName("strHomeLineupGoalkeeper")
-        val strHomeLineupGoalkeeper: Any,
+        val strHomeLineupGoalkeeper: String,
         @SerializedName("strHomeLineupMidfield")
-        val strHomeLineupMidfield: Any,
+        val strHomeLineupMidfield: String,
         @SerializedName("strHomeLineupSubstitutes")
-        val strHomeLineupSubstitutes: Any,
+        val strHomeLineupSubstitutes: String,
         @SerializedName("strHomeRedCards")
-        val strHomeRedCards: Any,
+        val strHomeRedCards: String,
         @SerializedName("strHomeTeam")
         val strHomeTeam: String,
         @SerializedName("strHomeYellowCards")
-        val strHomeYellowCards: Any,
+        val strHomeYellowCards: String,
         @SerializedName("strLeague")
         val strLeague: String,
         @SerializedName("strLocked")

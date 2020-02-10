@@ -1,22 +1,22 @@
 package com.example.submission_second.ui.detail_league
 
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.submission_second.databinding.FragmentDetailLeagueBinding
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.submission_second.R
 import com.example.submission_second.adapter.RecyclerViewNextmatchAdapter
 import com.example.submission_second.adapter.RecyclerViewPreviousMatchAdapter
 import com.example.submission_second.model.model.next_match.NextMatchResponse
@@ -49,7 +49,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         arguments?.let {
             leagueId = DetailLeagueFragmentArgs.fromBundle(it).idLeague
             leagueName = DetailLeagueFragmentArgs.fromBundle(it).idTitleLeague
-            (activity as AppCompatActivity).supportActionBar!!.setTitle(leagueName)
+            (activity as AppCompatActivity).supportActionBar!!.title = leagueName
         }
         storeLeagueId(leagueId)
         viewModel.getDataLeague.observe(this, Observer {
@@ -61,12 +61,22 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         })
         viewModel.getNextMatch.observe(this, Observer {
             it?.let {
-                passDataToAdapterNextMatch(it)
+                if (it.isNullOrEmpty()) {
+                    binding.recyclerViewNextMatch.visibility = View.INVISIBLE
+                } else {
+                    passDataToAdapterNextMatch(it)
+                }
+
             }
         })
         viewModel.getPreviousMatch.observe(this, Observer {
             it?.let {
-                passDataToAdapterPreviousMatch(it)
+                if (it.isNullOrEmpty()) {
+                    binding.recyclerViewPreviousMatch.visibility = View.INVISIBLE
+                } else {
+                    passDataToAdapterPreviousMatch(it)
+                }
+
             }
         })
 
@@ -80,10 +90,9 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         adapterNextMatch.refreshData(response)
     }
 
-
     private fun loadImageGlide(strFanart1: String) {
-        if (strFanart1.isEmpty()) {
-
+        if (strFanart1.isNullOrEmpty()) {
+            binding.leagueImage.setImageResource(R.drawable.english_premier_league)
         } else {
             Glide.with(this).asBitmap().load(strFanart1)
                 .apply {
@@ -115,10 +124,16 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
     }
 
     override fun onPressed(model: NextMatchResponse.Event, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        goToDetail(model.idEvent)
     }
 
     override fun onPressed(model: PreviousMatchResponse.PreviousMatchData, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        goToDetail(model.idEvent!!)
     }
+
+    private fun goToDetail(leagueId: String) {
+        val action = DetailLeagueFragmentDirections.actionLaunchDetailLeaguetoDetailMatch(leagueId)
+        findNavController().navigate(action)
+    }
+
 }

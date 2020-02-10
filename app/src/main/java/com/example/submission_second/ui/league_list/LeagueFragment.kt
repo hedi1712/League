@@ -15,9 +15,6 @@ import com.example.submission_second.databinding.FragmentHomeClubBinding
 import com.example.submission_second.model.model.league_list.LeagueData
 
 class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedListener {
-    override fun onListLeaguePressed(leagueList: LeagueData, position: Int) {
-        passingListData(leagueList.idLeague,leagueList.strLeague)
-    }
 
     private lateinit var binding: FragmentHomeClubBinding
     private lateinit var viewModel: LeagueViewModel
@@ -48,6 +45,11 @@ class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedLis
             }
 
         })
+        onFindClick()
+    }
+
+    override fun onListLeaguePressed(leagueList: LeagueData, position: Int) {
+        passingListData(leagueList.idLeague, leagueList.strLeague)
     }
 
     fun refreshList(leagues: List<LeagueData>) {
@@ -63,13 +65,20 @@ class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedLis
         binding.rvClub.addItemDecoration(dividerItemDecoration)
     }
 
-    fun passingListData(idLeague: String, strLeague: String) {
-        goToDetailLeague(idLeague,strLeague)
+    fun passingListData(idLeague: String, leagueName: String) {
+        goToDetailLeague(idLeague, leagueName)
     }
 
     private fun goToDetailLeague(idLeague: String, leagueName: String) {
-        val action = LeagueFragmentDirections.actionLaunchTodetailLeagueFragment(idLeague,leagueName)
+        val action =
+            LeagueFragmentDirections.actionLaunchTodetailLeagueFragment(idLeague, leagueName)
         findNavController().navigate(action)
     }
 
+    fun onFindClick() {
+        binding.findMatch.setOnClickListener {
+            val action = LeagueFragmentDirections.actionActionLaunchSearchView()
+            findNavController().navigate(action)
+        }
+    }
 }

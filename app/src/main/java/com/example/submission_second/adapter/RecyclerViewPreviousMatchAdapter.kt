@@ -3,8 +3,7 @@ package com.example.submission_second.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.submission_second.databinding.FragmentDetailMatchBinding
-import com.example.submission_second.databinding.FragmentPreviousMatchBinding
+import com.example.submission_second.databinding.ListPreviousMatchBinding
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
 import com.example.submission_second.ui.previous_match.PreviousMatch
 
@@ -13,7 +12,7 @@ class RecyclerViewPreviousMatchAdapter(
     val listener: OnPreviousMatch
 ) :
     RecyclerView.Adapter<RecyclerViewPreviousMatchAdapter.ViewHolder>() {
-    class ViewHolder(val binding: FragmentPreviousMatchBinding) :
+    class ViewHolder(val binding: ListPreviousMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             model: PreviousMatchResponse.PreviousMatchData,
@@ -39,13 +38,13 @@ class RecyclerViewPreviousMatchAdapter(
         viewType: Int
     ): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = FragmentPreviousMatchBinding.inflate(layoutInflater, parent, false)
+        val binding = ListPreviousMatchBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = previousMatch.size
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(previousMatch[position], position,listener)
+        holder.bind(previousMatch[position], position, listener)
     }
 
     fun refreshData(previousMatch: List<PreviousMatchResponse.PreviousMatchData>) {

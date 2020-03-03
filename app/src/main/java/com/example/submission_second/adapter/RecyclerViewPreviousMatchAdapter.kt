@@ -14,10 +14,7 @@ class RecyclerViewPreviousMatchAdapter(
     RecyclerView.Adapter<RecyclerViewPreviousMatchAdapter.ViewHolder>() {
     class ViewHolder(val binding: ListPreviousMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(
-            model: PreviousMatchResponse.PreviousMatchData,
-            position: Int,
-            listener: OnPreviousMatch
+        fun bind(model: PreviousMatchResponse.PreviousMatchData, position: Int, listener: OnPreviousMatch
         ) {
             binding.model = model
             binding.executePendingBindings()

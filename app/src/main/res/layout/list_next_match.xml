@@ -4,11 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="adapter"
             type="com.example.submission_second.adapter.RecyclerViewNextmatchAdapter" />
-
         <variable
             name="model"
             type="com.example.submission_second.model.model.next_match.NextMatchResponse.Event" />

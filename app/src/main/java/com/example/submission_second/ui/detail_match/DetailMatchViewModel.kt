@@ -43,8 +43,6 @@ class DetailMatchViewModel : ViewModel() {
         _getMatchDetail.postValue(response)
     }
 
-
-
     override fun onCleared() {
         mCompositeDisposable.dispose()
         super.onCleared()

@@ -34,18 +34,8 @@
             app:argType="string"
             android:defaultValue="null" />
         <action
-            android:id="@+id/actionLaunchDetailLeaguetoDetailMatch"
-            app:destination="@id/detailMatch" />
-    </fragment>
-    <fragment
-        android:id="@+id/detailMatch"
-        android:name="com.example.submission_second.ui.next_match.NextMatchFragment"
-        android:label="fragment_next_match"
-        tools:layout="@layout/fragment_detail_match" >
-        <argument
-            android:name="leagueId"
-            app:argType="string"
-            android:defaultValue="null" />
+            android:id="@+id/actionLaunchDetailMatchFragment"
+            app:destination="@id/detailMatchFragment" />
     </fragment>
     <fragment
         android:id="@+id/previousMatch"
@@ -59,12 +49,22 @@
         tools:layout="@layout/list_next_match" />
     <fragment
         android:id="@+id/searchView"
-        android:name="com.example.submission_second.SearchViewFragment"
+        android:name="com.example.submission_second.ui.search_view.SearchViewFragment"
         android:label="fragment_search_view"
         tools:layout="@layout/fragment_search_view" >
         <action
-            android:id="@+id/actionLaunchToDetailMatch"
-            app:destination="@id/detailMatch" />
+            android:id="@+id/actionLaunchSearchViewToDetailMatchFragment"
+            app:destination="@id/detailMatchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailMatchFragment"
+        android:name="com.example.submission_second.ui.detail_match.DetailMatchFragment"
+        android:label="fragment_detail_match"
+        tools:layout="@layout/fragment_detail_match" >
+        <argument
+            android:name="leagueId"
+            app:argType="string"
+            android:defaultValue="null" />
     </fragment>
 
 </navigation>

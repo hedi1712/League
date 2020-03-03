@@ -91,7 +91,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
     }
 
     private fun loadImageGlide(strFanart1: String) {
-        if (strFanart1.isNullOrEmpty()) {
+        if (strFanart1.isEmpty()) {
             binding.leagueImage.setImageResource(R.drawable.english_premier_league)
         } else {
             Glide.with(this).asBitmap().load(strFanart1)
@@ -128,11 +128,11 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
     }
 
     override fun onPressed(model: PreviousMatchResponse.PreviousMatchData, position: Int) {
-        goToDetail(model.idEvent!!)
+        goToDetail(model.idEvent)
     }
 
     private fun goToDetail(leagueId: String) {
-        val action = DetailLeagueFragmentDirections.actionLaunchDetailLeaguetoDetailMatch(leagueId)
+        val action = DetailLeagueFragmentDirections.actionLaunchDetailMatchFragment(leagueId)
         findNavController().navigate(action)
     }
 

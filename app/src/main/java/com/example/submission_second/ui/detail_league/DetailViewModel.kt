@@ -86,9 +86,7 @@ class DetailViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<PreviousMatchResponse>() {
                     override fun onComplete() {
-
                     }
-
                     override fun onNext(response: PreviousMatchResponse) {
                         ProgressBar.INVISIBLE
                         response.events?.let { listPreviousMatch(it) }

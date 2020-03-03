@@ -6,6 +6,7 @@ import com.example.submission_second.model.model.league_detail.LeagueDetailRespo
 import com.example.submission_second.model.model.league_list.LeagueListResponse
 import com.example.submission_second.model.model.next_match.NextMatchResponse
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
+import com.example.submission_second.model.model.search_match.SearchMatchResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -26,6 +27,6 @@ interface ApiService {
     @GET("lookupevent.php")
     fun getDetailMatchWithId(@Query("id") id: String): Observable<DetailMatchResponse>
 
-//    @GET("searchevents.php")
-//    fun getSearchMatchWithId(@Query("id") id : String): Observable<ListMatchResponse>
+    @GET("searchevents.php")
+    fun getSearchMatchWithId(@Query("e") id : String): Observable<SearchMatchResponse>
 }

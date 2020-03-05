@@ -18,7 +18,6 @@ class DetailMatchViewModel : ViewModel() {
     val getMatchDetail: LiveData<List<DetailMatchResponse.DetailMatchData>>
         get() = _getMatchDetail
 
-
     fun fetchDetailMatch(leagueId: String) {
         mCompositeDisposable.addAll(
             networkConfig.apiService().getDetailMatchWithId(leagueId)
@@ -47,4 +46,6 @@ class DetailMatchViewModel : ViewModel() {
         mCompositeDisposable.dispose()
         super.onCleared()
     }
+
+
 }

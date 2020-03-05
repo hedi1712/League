@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.example.submission_second.model.model.search_match.SearchMatchResponse.SearchData" />
+            type="com.example.submission_second.model.model.search_match.SearchData" />
 
         <variable
             name="adapter"

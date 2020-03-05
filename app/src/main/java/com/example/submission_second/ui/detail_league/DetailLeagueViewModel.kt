@@ -7,16 +7,20 @@ import androidx.lifecycle.ViewModel
 import com.example.submission_second.R
 import com.example.submission_second.model.model.league_detail.LeagueDetailData
 import com.example.submission_second.model.model.league_detail.LeagueDetailResponse
+import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.next_match.NextMatchResponse
+import com.example.submission_second.model.model.previous_match.PreviousMatchData
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
+import com.example.submission_second.model.model.search_match.SearchData
 import com.example.submission_second.module.NetworkConfig
+import com.example.submission_second.util.toddMMyyyy
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class DetailViewModel : ViewModel() {
+class DetailLeagueViewModel : ViewModel() {
     val networkConfig = NetworkConfig()
     private val mCompositeDisposable = CompositeDisposable()
 
@@ -24,13 +28,13 @@ class DetailViewModel : ViewModel() {
     val getDataLeague: LiveData<List<LeagueDetailData>>
         get() = _getDetailLeague
 
-    private val _getNextMatch = MutableLiveData<List<NextMatchResponse.Event>>()
-    val getNextMatch: LiveData<List<NextMatchResponse.Event>>
+    private val _getNextMatch = MutableLiveData<List<Event>>()
+    val getNextMatch: LiveData<List<Event>>
         get() = _getNextMatch
 
     private val _getPreviousMatch =
-        MutableLiveData<List<PreviousMatchResponse.PreviousMatchData>>()
-    val getPreviousMatch: LiveData<List<PreviousMatchResponse.PreviousMatchData>>
+        MutableLiveData<List<PreviousMatchData>>()
+    val getPreviousMatch: LiveData<List<PreviousMatchData>>
         get() = _getPreviousMatch
 
     fun getDetailLeagueData(leagueId: String) {
@@ -41,7 +45,6 @@ class DetailViewModel : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<LeagueDetailResponse>() {
                     override fun onNext(response: LeagueDetailResponse) {
-                        ProgressBar.INVISIBLE
                         setResultLeagueList(response.leagues)
                     }
 
@@ -58,13 +61,14 @@ class DetailViewModel : ViewModel() {
     fun getNextMatchData(leagueId: String) {
         mCompositeDisposable.add(
             networkConfig.apiService().getNextMatchWithId(leagueId)
+                .map { transformNextData(it) }
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<NextMatchResponse>() {
-                    override fun onNext(response: NextMatchResponse) {
+                .subscribeWith(object : DisposableObserver<List<Event>>() {
+                    override fun onNext(response: List<Event>) {
                         ProgressBar.INVISIBLE
-                        response.events?.let { listNextMatch(it) }
+                        response.let { listNextMatch(response) }
                     }
 
                     override fun onComplete() {
@@ -76,20 +80,41 @@ class DetailViewModel : ViewModel() {
 
                 })
         )
+    }
+
+    private fun transformNextData(response: NextMatchResponse): List<Event> {
+        val nextMatchData = mutableListOf<Event>()
+        for (i in response.events) {
+            nextMatchData.add(
+                Event(
+                    i.idEvent,
+                    i.dateEvent.toddMMyyyy(),
+                    i.intAwayScore,
+                    i.intHomeScore,
+                    i.strAwayTeam,
+                    i.strHomeTeam,
+                    i.strLeague,
+                    i.strTime
+                )
+            )
+        }
+        return nextMatchData
     }
 
     fun getPreviousMatch(leagueId: String) {
         mCompositeDisposable.add(
             networkConfig.apiService().getPreviousMatchWithId(leagueId)
+                .map { transformPreviousData(it) }
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<PreviousMatchResponse>() {
+                .subscribeWith(object : DisposableObserver<List<PreviousMatchData>>() {
                     override fun onComplete() {
                     }
-                    override fun onNext(response: PreviousMatchResponse) {
+
+                    override fun onNext(response: List<PreviousMatchData>) {
                         ProgressBar.INVISIBLE
-                        response.events?.let { listPreviousMatch(it) }
+                        response.let { listPreviousMatch(it) }
                     }
 
                     override fun onError(e: Throwable) {
@@ -98,7 +123,27 @@ class DetailViewModel : ViewModel() {
         )
     }
 
-    private fun listNextMatch(events: List<NextMatchResponse.Event>) {
+    private fun transformPreviousData(response: PreviousMatchResponse): List<PreviousMatchData> {
+        val previousMatchData = mutableListOf<PreviousMatchData>()
+        for (i in response.events) {
+            previousMatchData.add(
+                PreviousMatchData(
+                    i.idEvent,
+                    i.dateEvent.toddMMyyyy(),
+                    i.intAwayScore,
+                    i.intHomeScore,
+                    i.strAwayTeam,
+                    i.strHomeTeam,
+                    i.strLeague,
+                    i.strTime
+                )
+            )
+        }
+        return previousMatchData
+    }
+
+
+    private fun listNextMatch(events: List<Event>) {
         _getNextMatch.postValue(events)
     }
 
@@ -106,10 +151,9 @@ class DetailViewModel : ViewModel() {
         _getDetailLeague.postValue(leagueDetailData)
     }
 
-    fun listPreviousMatch(leagueDetailData: List<PreviousMatchResponse.PreviousMatchData>) {
+    fun listPreviousMatch(leagueDetailData: List<PreviousMatchData>) {
         _getPreviousMatch.postValue(leagueDetailData)
     }
-
 
     override fun onCleared() {
         mCompositeDisposable.dispose()

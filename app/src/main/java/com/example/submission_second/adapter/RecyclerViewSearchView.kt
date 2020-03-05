@@ -4,15 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.submission_second.databinding.ListSearchViewBinding
+import com.example.submission_second.model.model.search_match.SearchData
 import com.example.submission_second.model.model.search_match.SearchMatchResponse
 
 class RecyclerViewSearchView(
-    var listSearch: List<SearchMatchResponse.SearchData>,
+    var listSearch: List<SearchData>,
     var listener: OnClick
 ) :
     RecyclerView.Adapter<RecyclerViewSearchView.ViewHolder>() {
     class ViewHolder(val binding: ListSearchViewBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(modelBind: SearchMatchResponse.SearchData, position: Int, listener: OnClick) {
+        fun bind(modelBind: SearchData, position: Int, listener: OnClick) {
             binding.model = modelBind
             binding.root.setOnClickListener {
                 listener.onClickListener(modelBind, position)
@@ -35,13 +36,13 @@ class RecyclerViewSearchView(
     override fun onBindViewHolder(holder: RecyclerViewSearchView.ViewHolder, position: Int) =
         holder.bind(listSearch[position], position, listener)
 
-    fun refreshData(listSearch: List<SearchMatchResponse.SearchData>) {
+    fun refreshData(listSearch: List<SearchData>) {
         this.listSearch = listSearch
         notifyDataSetChanged()
     }
 
     interface OnClick {
-        fun onClickListener(model: SearchMatchResponse.SearchData, position: Int)
+        fun onClickListener(model: SearchData, position: Int)
     }
 
 }

@@ -9,7 +9,7 @@
             type="com.example.submission_second.adapter.RecyclerViewNextmatchAdapter" />
         <variable
             name="model"
-            type="com.example.submission_second.model.model.next_match.NextMatchResponse.Event" />
+            type="com.example.submission_second.model.model.next_match.Event" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,7 +84,7 @@
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{model.intAwayScore}"
+                    android:text="@{model.intHomeScore}"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -96,7 +96,7 @@
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{model.intHomeScore}"
+                    android:text="@{model.intAwayScore}"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                     app:layout_constraintEnd_toStartOf="@+id/imageView2"

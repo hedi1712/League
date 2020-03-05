@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -19,8 +18,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.submission_second.R
 import com.example.submission_second.adapter.RecyclerViewNextmatchAdapter
 import com.example.submission_second.adapter.RecyclerViewPreviousMatchAdapter
-import com.example.submission_second.model.model.next_match.NextMatchResponse
-import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
+import com.example.submission_second.model.model.next_match.Event
+import com.example.submission_second.model.model.previous_match.PreviousMatchData
 
 
 class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatchPressed,
@@ -28,7 +27,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
 
     private var leagueId: String = ""
     private var leagueName: String = ""
-    private lateinit var viewModel: DetailViewModel
+    private lateinit var viewModel: DetailLeagueViewModel
     private lateinit var binding: FragmentDetailLeagueBinding
     private val adapterNextMatch = RecyclerViewNextmatchAdapter(listOf(), this)
     private val adapterPreviousMatch = RecyclerViewPreviousMatchAdapter(listOf(), this)
@@ -37,13 +36,14 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(activity!!).get(DetailViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(DetailLeagueViewModel::class.java)
         binding = FragmentDetailLeagueBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hideData()
         initRecyclerViewNextMatch()
         initRecyclerViewPreviousMatch()
         arguments?.let {
@@ -56,11 +56,11 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
             it?.let {
                 binding.leagueInfo.text = it[0].strDescriptionEN
                 loadImageGlide(it[0].strFanart1)
-                showView()
             }
         })
         viewModel.getNextMatch.observe(this, Observer {
             it?.let {
+                showData()
                 if (it.isNullOrEmpty()) {
                     binding.recyclerViewNextMatch.visibility = View.INVISIBLE
                 } else {
@@ -71,6 +71,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         })
         viewModel.getPreviousMatch.observe(this, Observer {
             it?.let {
+                showData()
                 if (it.isNullOrEmpty()) {
                     binding.recyclerViewPreviousMatch.visibility = View.INVISIBLE
                 } else {
@@ -82,11 +83,11 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
 
     }
 
-    private fun passDataToAdapterPreviousMatch(response: List<PreviousMatchResponse.PreviousMatchData>) {
+    private fun passDataToAdapterPreviousMatch(response: List<PreviousMatchData>) {
         adapterPreviousMatch.refreshData(response)
     }
 
-    private fun passDataToAdapterNextMatch(response: List<NextMatchResponse.Event>) {
+    private fun passDataToAdapterNextMatch(response: List<Event>) {
         adapterNextMatch.refreshData(response)
     }
 
@@ -107,10 +108,6 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         viewModel.getPreviousMatch(leagueId)
     }
 
-    fun showView() {
-        binding.detailLeagueLayout.visibility = View.VISIBLE
-    }
-
     fun initRecyclerViewNextMatch() {
         val layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
         binding.recyclerViewNextMatch.layoutManager = layoutManager
@@ -123,17 +120,29 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         binding.recyclerViewPreviousMatch.adapter = adapterPreviousMatch
     }
 
-    override fun onPressed(model: NextMatchResponse.Event, position: Int) {
-        goToDetail(model.idEvent)
+    override fun onPressed(model: Event, position: Int) {
+        goToDetail(model.idEvent!!)
     }
 
-    override fun onPressed(model: PreviousMatchResponse.PreviousMatchData, position: Int) {
-        goToDetail(model.idEvent)
+    override fun onPressed(model: PreviousMatchData, position: Int) {
+        goToDetail(model.idEvent!!)
     }
 
     private fun goToDetail(leagueId: String) {
         val action = DetailLeagueFragmentDirections.actionLaunchDetailMatchFragment(leagueId)
         findNavController().navigate(action)
     }
+
+    fun showData() {
+        binding.showData = true
+        binding.progressBar.visibility = View.GONE
+    }
+
+    fun hideData() {
+        binding.showData = false
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+
 
 }

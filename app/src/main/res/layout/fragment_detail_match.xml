@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="fragment"
             type="com.example.submission_second.ui.detail_match.DetailMatchFragment" />
@@ -11,6 +12,9 @@
         <variable
             name="model"
             type="com.example.submission_second.model.model.detail_match.DetailMatchResponse.DetailMatchData" />
+        <variable
+            name="showData"
+            type="Boolean" />
     </data>
 
 
@@ -18,16 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateMatch"
-            app:srcCompat="@drawable/english_premier_league" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -149,6 +143,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Italian Serie A" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateMatch"
+            app:srcCompat="@drawable/english_premier_league" />
 
         <TextView
             android:id="@+id/dateMatch"
@@ -312,6 +316,24 @@
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/awayMidfielder"
             tools:text="Mamadou Sakho; Emre Can; Martin Skrtel;" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        android:visibility="@{safeUnbox(showData ? View.VISIBLE : View.GONE)}"
+            app:constraint_referenced_ids="awayForward,awayMidfielder,awayDefender,awayGoalKeeper,homeForward,homeMidfielder,homeDefender,homeGoalkeeper,textView19,timeMatch,dateMatch,leagueTitle,awayScorer,homeScorer,awayScore,homeScore,awayClubMatch,homeClubMatch,imageView4,imageView3">
+
+        </androidx.constraintlayout.widget.Group>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

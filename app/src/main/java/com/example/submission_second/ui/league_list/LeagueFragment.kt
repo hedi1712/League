@@ -37,10 +37,12 @@ class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hideData()
         initRecyclerView()
         viewModel.getLeagueData()
         viewModel.getData.observe(this, Observer {
             it.let {
+                showData()
                 refreshList(it.leagues)
             }
 
@@ -80,5 +82,15 @@ class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedLis
             val action = LeagueFragmentDirections.actionActionLaunchSearchView()
             findNavController().navigate(action)
         }
+    }
+
+    fun showData() {
+        binding.showData = true
+        binding.progressBar.visibility = View.INVISIBLE
+    }
+
+    fun hideData() {
+        binding.showData = false
+        binding.progressBar.visibility = View.VISIBLE
     }
 }

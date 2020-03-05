@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
+        <variable
+            name="showData"
+            type="Boolean" />
 
         <variable
             name="fragment"
@@ -15,14 +19,13 @@
 
         <variable
             name="vm"
-            type="com.example.submission_second.ui.detail_league.DetailViewModel" />
+            type="com.example.submission_second.ui.detail_league.DetailLeagueViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/detailLeagueLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <ScrollView
             android:layout_width="match_parent"
@@ -51,6 +54,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/recyclerViewNextMatch">
 
                     <ImageView
+                        android:id="@+id/imageView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="32dp"
@@ -96,6 +100,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
+                        android:id="@+id/imageView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="32dp"
@@ -153,8 +158,25 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayoutPreviousMatch" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{safeUnbox(showData ? View.VISIBLE : View.INVISIBLE)}"
+            app:constraint_referenced_ids="imageView5,textView3,textView2,imageView6,leagueImage,leagueInfo,recyclerViewNextMatch,recyclerViewPreviousMatch" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

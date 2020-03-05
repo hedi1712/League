@@ -10,6 +10,7 @@ buildscript {
         rxandroid_version = '2.1.0'
         retrofit_version = '2.3.0'
         retrofit_logging_interceptor_version = '3.9.1'
+        timber_version = '4.7.1'
     }
     repositories {
         google()

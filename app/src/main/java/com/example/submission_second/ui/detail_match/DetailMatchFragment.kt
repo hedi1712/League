@@ -9,7 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.submission_second.databinding.FragmentDetailMatchBinding
 import com.example.submission_second.ui.detail_league.DetailLeagueFragmentArgs
-
+import com.example.submission_second.util.Time
+import com.example.submission_second.util.toddMMyyyy
+import kotlinx.coroutines.selects.whileSelect
 
 class DetailMatchFragment : Fragment() {
     private lateinit var binding: FragmentDetailMatchBinding
@@ -30,12 +32,15 @@ class DetailMatchFragment : Fragment() {
         arguments?.let {
             leagueId = DetailMatchFragmentArgs.fromBundle(arguments!!).leagueId
         }
+        hideData()
+        showLoading()
         storeLeagueId(leagueId)
-
         viewModel.getMatchDetail.observe(this, Observer {
             it.let {
+                showData()
+                hideLoading()
                 binding.leagueTitle.text = it[0].strLeague
-                binding.dateMatch.text = it[0].dateEvent
+                binding.dateMatch.text = it[0].dateEvent.toddMMyyyy()
                 binding.timeMatch.text = it[0].strTime
                 binding.homeClubMatch.text = it[0].strHomeTeam
                 binding.awayClubMatch.text = it[0].strAwayTeam
@@ -56,7 +61,25 @@ class DetailMatchFragment : Fragment() {
     }
 
     fun storeLeagueId(leagueId: String) {
+        hideData()
+        showLoading()
         viewModel.fetchDetailMatch(leagueId)
+    }
+
+    fun showData() {
+        binding.showData = true
+    }
+
+    fun hideData() {
+        binding.showData = false
+    }
+
+    fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    fun hideLoading() {
+        binding.progressBar.visibility = View.INVISIBLE
     }
 
 }

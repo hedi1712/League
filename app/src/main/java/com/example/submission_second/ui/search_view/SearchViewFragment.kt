@@ -14,8 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.submission_second.R
 import com.example.submission_second.adapter.RecyclerViewSearchView
 import com.example.submission_second.databinding.FragmentSearchViewBinding
+import com.example.submission_second.model.model.search_match.SearchData
 import com.example.submission_second.model.model.search_match.SearchMatchResponse
-
 
 
 class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
@@ -31,6 +31,7 @@ class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
         initRecyclerView()
         viewModel.getSearchList.observe(this, Observer {
             it.let {
+                hideLoading()
                 sentDataToAdapter(it)
             }
         })
@@ -54,14 +55,19 @@ class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrEmpty()) {
                     binding.rvSearchView.visibility = GONE
+                    binding.notFound.visibility = VISIBLE
                 }
+                showLoading()
                 return false
             }
             override fun onQueryTextChange(query: String?): Boolean {
                 if (query.isNullOrEmpty()) {
                     binding.rvSearchView.visibility = GONE
+                    binding.notFound.visibility = VISIBLE
                     return false
                 }
+                showLoading()
+                binding.notFound.visibility = GONE
                 binding.rvSearchView.visibility = VISIBLE
                 sendQueryToViewModel(query)
                 return false
@@ -69,9 +75,10 @@ class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
         })
     }
 
-    private fun sentDataToAdapter(response: List<SearchMatchResponse.SearchData>) {
+    private fun sentDataToAdapter(response: List<SearchData>) {
         adapter.refreshData(response)
     }
+
     fun initRecyclerView() {
         binding.rvSearchView.adapter = adapter
     }
@@ -80,13 +87,21 @@ class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
         viewModel.sendQueryToApi(query)
     }
 
-    override fun onClickListener(model: SearchMatchResponse.SearchData, position: Int) {
-        passingDataToDetail(model.idEvent)
+    override fun onClickListener(model: SearchData, position: Int) {
+        passingDataToDetail(model.idEvent!!)
     }
 
     private fun passingDataToDetail(leagueId: String) {
-        val binding = SearchViewFragmentDirections.actionLaunchSearchViewToDetailMatchFragment(leagueId)
+        val binding =
+            SearchViewFragmentDirections.actionLaunchSearchViewToDetailMatchFragment(leagueId)
         findNavController().navigate(binding)
     }
 
+    fun showLoading() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    fun hideLoading() {
+        binding.progressBar.visibility = View.INVISIBLE
+    }
 }

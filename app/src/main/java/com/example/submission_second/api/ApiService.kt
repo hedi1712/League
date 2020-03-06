@@ -12,7 +12,7 @@ import retrofit2.http.Query
 
 interface ApiService {
     @GET("all_leagues.php")
-    fun getAllLeagueData(): Observable<LeagueListResponse>
+    fun getAllLeagueData(@Query("s") sport: String): Observable<LeagueListResponse>
 
     @GET("lookupleague.php")
     fun getDetailLeagueWithId(@Query("id") id: String): Observable<LeagueDetailResponse>

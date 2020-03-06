@@ -23,7 +23,7 @@ class LeagueViewModel : ViewModel() {
 
     fun getLeagueData() {
         mCompositeDisposable.add(
-            networkConfig.apiService().getAllLeagueData().subscribeOn(Schedulers.io())
+            networkConfig.apiService().getAllLeagueData("Soccer").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<LeagueListResponse>() {
                     override fun onNext(response: LeagueListResponse) {

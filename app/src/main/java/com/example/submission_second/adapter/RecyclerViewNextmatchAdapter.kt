@@ -20,7 +20,6 @@ class RecyclerViewNextmatchAdapter(
             binding.executePendingBindings()
             binding.root.setOnClickListener {
                 listerner.onPressed(model, position)
-
             }
         }
     }

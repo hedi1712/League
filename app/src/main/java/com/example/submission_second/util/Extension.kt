@@ -18,17 +18,3 @@ fun String?.toddMMyyyy(): String? {
     }
     return null
 }
-
-
-fun String?.Time(): String? {
-    if (!this.isNullOrEmpty()) {
-        val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.US)
-        try {
-            val date = dateFormat.parse(this)
-            return DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(date)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-    }
-    return null
-}

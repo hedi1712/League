@@ -14,10 +14,10 @@ import com.example.submission_second.adapter.RecyclerViewListLeague
 import com.example.submission_second.databinding.FragmentHomeClubBinding
 import com.example.submission_second.model.model.league_list.LeagueData
 
-class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedListener {
+class LeagueListFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedListener {
 
     private lateinit var binding: FragmentHomeClubBinding
-    private lateinit var viewModel: LeagueViewModel
+    private lateinit var viewModel: LeagueListViewModel
     private val adapter = RecyclerViewListLeague(listOf(), this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedLis
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(activity!!).get(LeagueViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(LeagueListViewModel::class.java)
         binding = FragmentHomeClubBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -51,7 +51,7 @@ class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedLis
     }
 
     override fun onListLeaguePressed(leagueList: LeagueData, position: Int) {
-        passingListData(leagueList.idLeague, leagueList.strLeague)
+        passingListData(leagueList.idLeague, leagueList.strLeague,leagueList.strBadge)
     }
 
     fun refreshList(leagues: List<LeagueData>) {
@@ -67,19 +67,23 @@ class LeagueFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedLis
         binding.rvClub.addItemDecoration(dividerItemDecoration)
     }
 
-    fun passingListData(idLeague: String, leagueName: String) {
-        goToDetailLeague(idLeague, leagueName)
+    fun passingListData(idLeague: String, leagueName: String, leagueUrl: String?) {
+        goToDetailLeague(idLeague, leagueName, leagueUrl!!)
     }
 
-    private fun goToDetailLeague(idLeague: String, leagueName: String) {
+    private fun goToDetailLeague(
+        idLeague: String,
+        leagueName: String,
+        leagueUrl: String?
+    ) {
         val action =
-            LeagueFragmentDirections.actionLaunchTodetailLeagueFragment(idLeague, leagueName)
+            LeagueListFragmentDirections.actionLaunchTodetailLeagueFragment(idLeague, leagueName,leagueUrl)
         findNavController().navigate(action)
     }
 
     fun onFindClick() {
         binding.findMatch.setOnClickListener {
-            val action = LeagueFragmentDirections.actionActionLaunchSearchView()
+            val action = LeagueListFragmentDirections.actionActionLaunchSearchView()
             findNavController().navigate(action)
         }
     }

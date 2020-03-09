@@ -1,10 +1,13 @@
 package com.example.submission_second.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.submission_second.databinding.ListClubBinding
 import com.example.submission_second.model.model.league_list.LeagueData
+import kotlinx.coroutines.withContext
 
 class RecyclerViewListLeague(var leagueList: List<LeagueData>, var listener: OnListLeaguePressedListener) :
     RecyclerView.Adapter<RecyclerViewListLeague.ViewHolder>() {
@@ -33,11 +36,15 @@ class RecyclerViewListLeague(var leagueList: List<LeagueData>, var listener: OnL
     }
 
     override fun getItemCount(): Int = leagueList.size
+
     fun refreshData(leagueList: List<LeagueData>) {
         this.leagueList = leagueList
         notifyDataSetChanged()
     }
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(leagueList[position], listener, position)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(leagueList[position], listener, position)
+    }
+
 }
 
 

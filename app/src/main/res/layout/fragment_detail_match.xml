@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="fragment"
             type="com.example.submission_second.ui.detail_match.DetailMatchFragment" />
@@ -12,6 +14,16 @@
         <variable
             name="model"
             type="com.example.submission_second.model.model.detail_match.DetailMatchResponse.DetailMatchData" />
+
+        <variable
+        name="modelHome"
+        type="com.example.submission_second.model.model.detail_match.TeamHome" />
+
+        <variable
+            name="modelAway"
+            type="com.example.submission_second.model.model.detail_match.TeamAway" />
+
+
         <variable
             name="showData"
             type="Boolean" />
@@ -24,13 +36,14 @@
 
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/awayTeam"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            android:src="@{modelAway.strTeamBadge}"
+            app:layout_constraintBottom_toBottomOf="@+id/homeTeam"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="@+id/homeTeam"
             app:srcCompat="@drawable/english_premier_league" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -50,11 +63,10 @@
             android:layout_marginEnd="32dp"
             android:gravity="center"
             android:maxLines="2"
-            android:text="TextView"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3"
+            app:layout_constraintTop_toBottomOf="@+id/homeTeam"
             tools:text="Arsenal" />
 
         <TextView
@@ -69,7 +81,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.48"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"
+            app:layout_constraintTop_toBottomOf="@+id/awayTeam"
             tools:text="Liverpool" />
 
         <TextView
@@ -78,12 +90,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text=""
             android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@+id/homeTeam"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:layout_constraintStart_toEndOf="@+id/homeTeam"
+            app:layout_constraintTop_toTopOf="@+id/homeTeam"
             tools:text="2" />
 
         <TextView
@@ -92,12 +104,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text=""
             android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-            app:layout_constraintEnd_toStartOf="@+id/imageView4"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@+id/awayTeam"
+            app:layout_constraintEnd_toStartOf="@+id/awayTeam"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="@+id/awayTeam"
             tools:text="0" />
 
         <TextView
@@ -108,8 +120,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:text=""
             android:gravity="center"
+            android:text=""
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="parent"
@@ -122,8 +134,8 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text=""
             android:gravity="center"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="@+id/homeScorer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -145,10 +157,11 @@
             tools:text="Italian Serie A" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/homeTeam"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="24dp"
+            android:src="@{modelHome.strTeamBadge}"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateMatch"
@@ -320,8 +333,8 @@
         <androidx.constraintlayout.widget.Group
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        android:visibility="@{safeUnbox(showData ? View.VISIBLE : View.GONE)}"
-            app:constraint_referenced_ids="awayForward,awayMidfielder,awayDefender,awayGoalKeeper,homeForward,homeMidfielder,homeDefender,homeGoalkeeper,textView19,timeMatch,dateMatch,leagueTitle,awayScorer,homeScorer,awayScore,homeScore,awayClubMatch,homeClubMatch,imageView4,imageView3">
+            android:visibility="@{safeUnbox(showData ? View.VISIBLE : View.GONE)}"
+            app:constraint_referenced_ids="awayForward,awayMidfielder,awayDefender,awayGoalKeeper,homeForward,homeMidfielder,homeDefender,homeGoalkeeper,textView19,timeMatch,dateMatch,leagueTitle,awayScorer,homeScorer,awayScore,homeScore,awayClubMatch,homeClubMatch,awayTeam,homeTeam">
 
         </androidx.constraintlayout.widget.Group>
 

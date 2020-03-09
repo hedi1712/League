@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.submission_second.databinding.FragmentDetailLeagueBinding
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
 
     private var leagueId: String = ""
     private var leagueName: String = ""
+    private var leagueUrl: String? = ""
     private lateinit var viewModel: DetailLeagueViewModel
     private lateinit var binding: FragmentDetailLeagueBinding
     private val adapterNextMatch = RecyclerViewNextmatchAdapter(listOf(), this)
@@ -55,7 +57,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         viewModel.getDataLeague.observe(this, Observer {
             it?.let {
                 binding.leagueInfo.text = it[0].strDescriptionEN
-                loadImageGlide(it[0].strFanart1)
+                loadImageGlide(it[0].strBadge)
             }
         })
         viewModel.getNextMatch.observe(this, Observer {
@@ -83,16 +85,8 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
 
     }
 
-    private fun passDataToAdapterPreviousMatch(response: List<PreviousMatchData>) {
-        adapterPreviousMatch.refreshData(response)
-    }
-
-    private fun passDataToAdapterNextMatch(response: List<Event>) {
-        adapterNextMatch.refreshData(response)
-    }
-
-    private fun loadImageGlide(strFanart1: String) {
-        if (strFanart1.isEmpty()) {
+    private fun loadImageGlide(strFanart1: String?) {
+        if (strFanart1.isNullOrEmpty()) {
             binding.leagueImage.setImageResource(R.drawable.english_premier_league)
         } else {
             Glide.with(this).asBitmap().load(strFanart1)
@@ -100,6 +94,15 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
                     RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
                 }.into(binding.leagueImage)
         }
+    }
+
+
+    private fun passDataToAdapterPreviousMatch(response: List<PreviousMatchData>) {
+        adapterPreviousMatch.refreshData(response)
+    }
+
+    private fun passDataToAdapterNextMatch(response: List<Event>) {
+        adapterNextMatch.refreshData(response)
     }
 
     fun storeLeagueId(leagueId: String) {
@@ -142,7 +145,6 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         binding.showData = false
         binding.progressBar.visibility = View.VISIBLE
     }
-
 
 
 }

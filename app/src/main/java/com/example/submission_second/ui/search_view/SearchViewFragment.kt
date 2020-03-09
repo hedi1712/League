@@ -12,18 +12,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.submission_second.R
-import com.example.submission_second.adapter.RecyclerViewSearchView
+import com.example.submission_second.adapter.RecyclerSearch
 import com.example.submission_second.databinding.FragmentSearchViewBinding
-import com.example.submission_second.model.model.search_match.SearchData
+import com.example.submission_second.model.model.search_match.SearchMatchData
 import com.example.submission_second.model.model.search_match.SearchMatchResponse
 
 
-class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
+class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
 
     private lateinit var searchView: SearchView
     private lateinit var binding: FragmentSearchViewBinding
     private lateinit var viewModel: SearchViewModelFragment
-    val adapter = RecyclerViewSearchView(listOf(), this)
+    val adapter = RecyclerSearch(listOf(), this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,6 +60,7 @@ class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
                 showLoading()
                 return false
             }
+
             override fun onQueryTextChange(query: String?): Boolean {
                 if (query.isNullOrEmpty()) {
                     binding.rvSearchView.visibility = GONE
@@ -75,7 +76,7 @@ class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
         })
     }
 
-    private fun sentDataToAdapter(response: List<SearchData>) {
+    private fun sentDataToAdapter(response: List<SearchMatchData>) {
         adapter.refreshData(response)
     }
 
@@ -87,9 +88,6 @@ class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
         viewModel.sendQueryToApi(query)
     }
 
-    override fun onClickListener(model: SearchData, position: Int) {
-        passingDataToDetail(model.idEvent!!)
-    }
 
     private fun passingDataToDetail(leagueId: String) {
         val binding =
@@ -103,5 +101,9 @@ class SearchViewFragment : Fragment(), RecyclerViewSearchView.OnClick {
 
     fun hideLoading() {
         binding.progressBar.visibility = View.INVISIBLE
+    }
+
+    override fun OnClick(searchData: SearchMatchData, position: Int) {
+        passingDataToDetail(searchData.idEvent)
     }
 }

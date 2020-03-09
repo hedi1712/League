@@ -12,5 +12,7 @@ data class LeagueDetailData(
     @SerializedName("strDescriptionEN")
     val strDescriptionEN: String,
     @SerializedName("strFanart1")
-    val strFanart1: String
+    val strFanart1: String?,
+    @SerializedName("strBadge")
+    val strBadge: String?
 )

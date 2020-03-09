@@ -6,12 +6,12 @@
     <data>
 
         <variable
-            name="model"
-            type="com.example.submission_second.model.model.search_match.SearchData" />
+            name="adapter"
+            type="com.example.submission_second.adapter.RecyclerSearch" />
 
         <variable
-            name="adapter"
-            type="com.example.submission_second.adapter.RecyclerViewSearchView" />
+            name="model"
+            type="com.example.submission_second.model.model.search_match.SearchMatchData" />
 
     </data>
 
@@ -129,8 +129,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@{model.strLeague}"
                     android:gravity="center"
+                    android:text="@{model.strLeague}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline6"
@@ -140,6 +140,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

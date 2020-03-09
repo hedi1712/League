@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import com.example.submission_second.R
 import com.example.submission_second.model.model.league_detail.LeagueDetailData
 import com.example.submission_second.model.model.league_detail.LeagueDetailResponse
+import com.example.submission_second.model.model.league_list.LeagueListResponse
 import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.next_match.NextMatchResponse
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
-import com.example.submission_second.model.model.search_match.SearchData
 import com.example.submission_second.module.NetworkConfig
 import com.example.submission_second.util.toddMMyyyy
 import com.google.android.material.snackbar.Snackbar
@@ -128,14 +128,8 @@ class DetailLeagueViewModel : ViewModel() {
         for (i in response.events) {
             previousMatchData.add(
                 PreviousMatchData(
-                    i.idEvent,
-                    i.dateEvent.toddMMyyyy(),
-                    i.intAwayScore,
-                    i.intHomeScore,
-                    i.strAwayTeam,
-                    i.strHomeTeam,
-                    i.strLeague,
-                    i.strTime
+                i.idEvent,i.dateEvent.toddMMyyyy(),
+                    i.intAwayScore,i.intHomeScore,i.strAwayTeam,i.strHomeTeam,i.strLeague,i.strTime
                 )
             )
         }

@@ -11,7 +11,7 @@ fun String?.toddMMyyyy(): String? {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         try {
             val date = dateFormat.parse(this)
-            return DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(date)
+            return DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(date!!)
         } catch (e: ParseException) {
             e.printStackTrace()
         }

@@ -5,17 +5,19 @@ import android.os.Bundle
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.submission_second.R
 import com.example.submission_second.adapter.RecyclerSearch
 import com.example.submission_second.databinding.FragmentSearchViewBinding
 import com.example.submission_second.model.model.search_match.SearchMatchData
-import com.example.submission_second.model.model.search_match.SearchMatchResponse
+import com.example.submission_second.util.ViewModelFactory
 
 
 class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
@@ -23,16 +25,22 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
     private lateinit var searchView: SearchView
     private lateinit var binding: FragmentSearchViewBinding
     private lateinit var viewModel: SearchViewModelFragment
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     val adapter = RecyclerSearch(listOf(), this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.string_search)
         initRecyclerView()
-        viewModel.getSearchList.observe(this, Observer {
+        viewModel.getSearchList.observe(viewLifecycleOwner, Observer {
             it.let {
                 hideLoading()
                 sentDataToAdapter(it)
+            }
+        })
+        viewModel.getMessage.observe(viewLifecycleOwner, Observer {
+            it.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             }
         })
         setHasOptionsMenu(true)
@@ -42,8 +50,11 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModelFactory = ViewModelFactory { SearchViewModelFragment(activity!!) }
         binding = FragmentSearchViewBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProviders.of(activity!!).get(SearchViewModelFragment::class.java)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(SearchViewModelFragment::class.java)
+        binding.executePendingBindings()
         return binding.root
     }
 
@@ -96,7 +107,7 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
     }
 
     fun showLoading() {
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = VISIBLE
     }
 
     fun hideLoading() {
@@ -105,5 +116,9 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
 
     override fun OnClick(searchData: SearchMatchData, position: Int) {
         passingDataToDetail(searchData.idEvent)
+    }
+
+    override fun favorite(searchData: SearchMatchData) {
+        viewModel.storeToDatabase(searchData)
     }
 }

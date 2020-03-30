@@ -1,20 +1,22 @@
 package com.example.submission_second.adapter
 
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.submission_second.databinding.SearchListBinding
 import com.example.submission_second.model.model.search_match.SearchMatchData
 
-class RecyclerSearch(var searchData: List<SearchMatchData>, var listener: Onclick) :
+class RecyclerSearch(private var searchData: List<SearchMatchData>, var listener: Onclick) :
     RecyclerView.Adapter<RecyclerSearch.ViewHolder>() {
     class ViewHolder(val binding: SearchListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(model: SearchMatchData, listener: Onclick, position: Int) {
             binding.model = model
             binding.executePendingBindings()
+            binding.favorite.setOnClickListener {
+                listener.favoriteToDatabase(model)
+            }
             binding.root.setOnClickListener {
-                listener.OnClick(model, position)
+                listener.onClick(model, position)
             }
         }
     }
@@ -37,7 +39,8 @@ class RecyclerSearch(var searchData: List<SearchMatchData>, var listener: Onclic
     }
 
     interface Onclick {
-        fun OnClick(searchData: SearchMatchData, position: Int)
+        fun onClick(searchData: SearchMatchData, position: Int)
+        fun favoriteToDatabase(searchData: SearchMatchData)
     }
 }
 

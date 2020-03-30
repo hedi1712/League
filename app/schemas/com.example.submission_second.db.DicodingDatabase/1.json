@@ -1,0 +1,70 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "77be8e921430d8c7407fd16b6bcb4bad",
+    "entities": [
+      {
+        "tableName": "favorite_club",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idEvent` TEXT NOT NULL, `home_team` TEXT, `away_team` TEXT, `date` TEXT, `home_score` TEXT, `away_score` TEXT, `menu_id` INTEGER NOT NULL, PRIMARY KEY(`idEvent`))",
+        "fields": [
+          {
+            "fieldPath": "idEvent",
+            "columnName": "idEvent",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "homeTeam",
+            "columnName": "home_team",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "awayTeam",
+            "columnName": "away_team",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateMatch",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "homeScore",
+            "columnName": "home_score",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "awayScore",
+            "columnName": "away_score",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "menuId",
+            "columnName": "menu_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idEvent"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '77be8e921430d8c7407fd16b6bcb4bad')"
+    ]
+  }
+}

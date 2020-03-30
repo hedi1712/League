@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 
 class LeagueListViewModel : ViewModel() {
 
-    val networkConfig = NetworkConfig()
+   private val networkConfig = NetworkConfig()
     private val mCompositeDisposable = CompositeDisposable()
     private val _getData = MutableLiveData<LeagueListResponse>()
     val getData: LiveData<LeagueListResponse>
@@ -26,9 +26,11 @@ class LeagueListViewModel : ViewModel() {
                     override fun onNext(response: LeagueListResponse) {
                         setResultLeagueList(response)
                     }
+
                     override fun onComplete() {
 
                     }
+
                     override fun onError(e: Throwable) {
 
                     }

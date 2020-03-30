@@ -1,10 +1,10 @@
 package com.example.submission_second.ui.league_list
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -40,25 +40,24 @@ class LeagueListFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePresse
         hideData()
         initRecyclerView()
         viewModel.getLeagueData()
-        viewModel.getData.observe(this, Observer {
+        viewModel.getData.observe(viewLifecycleOwner, Observer {
             it.let {
                 showData()
                 refreshList(it.leagues)
             }
 
         })
-        onFindClick()
     }
 
     override fun onListLeaguePressed(leagueList: LeagueData, position: Int) {
-        passingListData(leagueList.idLeague, leagueList.strLeague,leagueList.strBadge)
+        passingListData(leagueList.idLeague, leagueList.strLeague, leagueList.strBadge)
     }
 
-    fun refreshList(leagues: List<LeagueData>) {
+   private fun refreshList(leagues: List<LeagueData>) {
         adapter.refreshData(leagues)
     }
 
-    fun initRecyclerView() {
+   private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(activity)
         val dividerItemDecoration =
             DividerItemDecoration(binding.rvClub.context, layoutManager.orientation)
@@ -67,7 +66,7 @@ class LeagueListFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePresse
         binding.rvClub.addItemDecoration(dividerItemDecoration)
     }
 
-    fun passingListData(idLeague: String, leagueName: String, leagueUrl: String?) {
+    private fun passingListData(idLeague: String, leagueName: String, leagueUrl: String?) {
         goToDetailLeague(idLeague, leagueName, leagueUrl!!)
     }
 
@@ -77,23 +76,21 @@ class LeagueListFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePresse
         leagueUrl: String?
     ) {
         val action =
-            LeagueListFragmentDirections.actionLaunchTodetailLeagueFragment(idLeague, leagueName,leagueUrl)
+            LeagueListFragmentDirections.actionLaunchTodetailLeagueFragment(
+                idLeague,
+                leagueName,
+                leagueUrl
+            )
         findNavController().navigate(action)
     }
 
-    fun onFindClick() {
-        binding.findMatch.setOnClickListener {
-            val action = LeagueListFragmentDirections.actionActionLaunchSearchView()
-            findNavController().navigate(action)
-        }
-    }
 
     fun showData() {
         binding.showData = true
         binding.progressBar.visibility = View.INVISIBLE
     }
 
-    fun hideData() {
+   private fun hideData() {
         binding.showData = false
         binding.progressBar.visibility = View.VISIBLE
     }

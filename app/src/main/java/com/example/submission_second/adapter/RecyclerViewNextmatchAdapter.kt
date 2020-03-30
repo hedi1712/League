@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.submission_second.databinding.ListNextMatchBinding
 import com.example.submission_second.model.model.next_match.Event
-import com.example.submission_second.model.model.next_match.NextMatchResponse
 
 class RecyclerViewNextmatchAdapter(
     var nextmatch: List<Event>,
@@ -18,6 +17,7 @@ class RecyclerViewNextmatchAdapter(
         fun bind(model: Event, position: Int, listerner: OnNextMatchPressed) {
             binding.model = model
             binding.executePendingBindings()
+            binding.favorite.setOnClickListener { listerner.favoriteTeam(model) }
             binding.root.setOnClickListener {
                 listerner.onPressed(model, position)
             }
@@ -26,6 +26,7 @@ class RecyclerViewNextmatchAdapter(
 
     interface OnNextMatchPressed {
         fun onPressed(model: Event, position: Int)
+        fun favoriteTeam(model: Event)
     }
 
     override fun onCreateViewHolder(

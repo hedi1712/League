@@ -10,7 +10,7 @@ data class PreviousMatchResponse(
 
 data class PreviousMatchData(
     @SerializedName("idEvent")
-    val idEvent: String?,
+    val idEvent: String,
     @SerializedName("dateEvent")
     val dateEvent: String?,
     @SerializedName("intAwayScore")

@@ -1,10 +1,10 @@
 package com.example.submission_second.ui.detail_match
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -37,7 +37,7 @@ class DetailMatchFragment : Fragment() {
         hideData()
         showLoading()
         storeLeagueId(leagueId)
-        viewModel.getMatchDetail.observe(this, Observer {
+        viewModel.getMatchDetail.observe(viewLifecycleOwner, Observer {
             it.let {
                 showData()
                 hideLoading()
@@ -63,7 +63,7 @@ class DetailMatchFragment : Fragment() {
             }
         })
 
-        viewModel.getBadgeHome.observe(this, Observer {
+        viewModel.getBadgeHome.observe(viewLifecycleOwner, Observer {
             it.let {
                 showData()
                 hideLoading()
@@ -71,7 +71,7 @@ class DetailMatchFragment : Fragment() {
             }
         })
 
-        viewModel.getBadgeAway.observe(this, Observer {
+        viewModel.getBadgeAway.observe(viewLifecycleOwner, Observer {
             it.let {
                 showData()
                 hideLoading()
@@ -89,25 +89,25 @@ class DetailMatchFragment : Fragment() {
         viewModel.fetchBadgeAway(idHomeTeam)
     }
 
-    fun storeLeagueId(leagueId: String) {
+    private fun storeLeagueId(leagueId: String) {
         hideData()
         showLoading()
         viewModel.fetchDetailMatch(leagueId)
     }
 
-    fun showData() {
+    private fun showData() {
         binding.showData = true
     }
 
-    fun hideData() {
+    private fun hideData() {
         binding.showData = false
     }
 
-    fun showLoading() {
+    private fun showLoading() {
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    fun hideLoading() {
+    private fun hideLoading() {
         binding.progressBar.visibility = View.INVISIBLE
     }
 

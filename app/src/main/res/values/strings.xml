@@ -9,5 +9,7 @@
     <string name="line_up">Line Up</string>
     <string name="null_or_empty">Maaf Data yang anda pilih tidak dapat dimuat saat ini</string>
     <string name="string_search">Search Match</string>
+    <string name="favorite">favorite</string>
+    <string name="delete">Delete</string>
 
 </resources>

@@ -3,7 +3,6 @@ package com.example.submission_second.api
 import com.example.submission_second.model.model.detail_match.DetailMatchResponse
 import com.example.submission_second.model.model.detail_match.GetBadgeAwayTeamResponse
 import com.example.submission_second.model.model.detail_match.GetBadgeHomeTeamResponse
-import com.example.submission_second.model.model.league_detail.LeagueDetailData
 import com.example.submission_second.model.model.league_detail.LeagueDetailResponse
 import com.example.submission_second.model.model.league_list.LeagueListResponse
 import com.example.submission_second.model.model.next_match.NextMatchResponse
@@ -30,11 +29,11 @@ interface ApiService {
     fun getDetailMatchWithId(@Query("id") id: String): Observable<DetailMatchResponse>
 
     @GET("searchevents.php")
-    fun getSearchMatchWithId(@Query("e") id : String): Observable<SearchMatchResponse>
+    fun getSearchMatchWithId(@Query("e") id: String): Observable<SearchMatchResponse>
 
     @GET("lookupteam.php")
-    fun getBadgeHomeWithId(@Query("id") id : String): Observable<GetBadgeHomeTeamResponse>
+    fun getBadgeHomeWithId(@Query("id") id: String): Observable<GetBadgeHomeTeamResponse>
 
     @GET("lookupteam.php")
-    fun getBadgeAwayWithId(@Query("id") id : String): Observable<GetBadgeAwayTeamResponse>
+    fun getBadgeAwayWithId(@Query("id") id: String): Observable<GetBadgeAwayTeamResponse>
 }

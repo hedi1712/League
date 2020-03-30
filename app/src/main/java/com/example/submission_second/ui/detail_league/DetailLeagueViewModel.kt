@@ -1,26 +1,29 @@
 package com.example.submission_second.ui.detail_league
 
+import android.content.Context
 import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.submission_second.R
+import com.example.submission_second.db.DicodingDatabase
+import com.example.submission_second.db.entity.EntityFavorite
 import com.example.submission_second.model.model.league_detail.LeagueDetailData
 import com.example.submission_second.model.model.league_detail.LeagueDetailResponse
-import com.example.submission_second.model.model.league_list.LeagueListResponse
 import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.next_match.NextMatchResponse
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
 import com.example.submission_second.module.NetworkConfig
 import com.example.submission_second.util.toddMMyyyy
-import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class DetailLeagueViewModel : ViewModel() {
+class DetailLeagueViewModel(application: Context) : ViewModel() {
+
+    private var database: DicodingDatabase? = null
+
     val networkConfig = NetworkConfig()
     private val mCompositeDisposable = CompositeDisposable()
 
@@ -36,6 +39,14 @@ class DetailLeagueViewModel : ViewModel() {
         MutableLiveData<List<PreviousMatchData>>()
     val getPreviousMatch: LiveData<List<PreviousMatchData>>
         get() = _getPreviousMatch
+
+    private val _getMessage = MutableLiveData<String>()
+    val getMessage: LiveData<String>
+        get() = _getMessage
+
+    init {
+        database = DicodingDatabase.buildDatabase(application.applicationContext)
+    }
 
     fun getDetailLeagueData(leagueId: String) {
         mCompositeDisposable.add(
@@ -128,14 +139,58 @@ class DetailLeagueViewModel : ViewModel() {
         for (i in response.events) {
             previousMatchData.add(
                 PreviousMatchData(
-                i.idEvent,i.dateEvent.toddMMyyyy(),
-                    i.intAwayScore,i.intHomeScore,i.strAwayTeam,i.strHomeTeam,i.strLeague,i.strTime
+                    i.idEvent,
+                    i.dateEvent.toddMMyyyy(),
+                    i.intAwayScore,
+                    i.intHomeScore,
+                    i.strAwayTeam,
+                    i.strHomeTeam,
+                    i.strLeague,
+                    i.strTime
                 )
             )
         }
         return previousMatchData
     }
 
+
+    fun storeToDatabaseNextMatch(searchData: Event) {
+        val data = EntityFavorite(
+            searchData.idEvent,
+            searchData.strHomeTeam,
+            searchData.strAwayTeam,
+            searchData.dateEvent,
+            searchData.intHomeScore,
+            searchData.intAwayScore,
+            1
+        )
+        mCompositeDisposable.add(
+            database!!.favoriteDao().insertFavorite(data).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { _getMessage.value = "Success Save In Database" },
+                    { _getMessage.value = "Failed Save In Database" })
+        )
+    }
+
+    fun storeToDatabasePreviousMatch(searchData: PreviousMatchData) {
+        val data = EntityFavorite(
+            searchData.idEvent,
+            searchData.strHomeTeam,
+            searchData.strAwayTeam,
+            searchData.dateEvent,
+            searchData.intHomeScore,
+            searchData.intAwayScore,
+            3
+        )
+        mCompositeDisposable.add(
+            database!!.favoriteDao().insertFavorite(data).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { _getMessage.value = "Success Save In Database" },
+                    { _getMessage.value = "Failed Save In Database" })
+        )
+    }
 
     private fun listNextMatch(events: List<Event>) {
         _getNextMatch.postValue(events)

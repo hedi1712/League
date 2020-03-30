@@ -1,19 +1,16 @@
 package com.example.submission_second
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.submission_second.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.fragment_detail_league.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
 
@@ -26,7 +23,7 @@ class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupToolbar()
-//        setupNavController()
+        setupBottomNavigation()
     }
 
     private fun setupToolbar() {
@@ -39,37 +36,62 @@ class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(shouldShow)
     }
 
-//    private fun setupNavController() {
-//        navController.addOnDestinationChangedListener(navigationListener)
-//    }
 
     private fun hideToolbarSubtitle() {
         supportActionBar?.subtitle = null
     }
 
-//    private val navigationListener =
-//        NavController.OnDestinationChangedListener { _, destination, _ ->
-//            invalidateOptionsMenu()
-//            hideToolbarSubtitle()
-//            when (destination.id) {
-//                R.id.homeClub -> {
-//                    showToolbar(true)
-//                    showToolbarBackArrow(true)
-//                }
-//                R.id.detailLeagueFragment -> {
-//                    showToolbar(true)
-//                    showToolbarBackArrow(true)
-//                }
-//                R.id.searchView -> {
-//                    showToolbar(true)
-//                    showToolbarBackArrow(true)
-//                }
-//                else -> {
-//                    showToolbar(false)
-//                    showToolbarBackArrow(false)
-//                }
-//            }
-//        }
+    private fun setupBottomNavigation() {
+        bottomNavigationView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener(navigationListener)
+    }
+
+    private fun showBottomNavigation(shouldShow: Boolean) {
+        if (shouldShow) bottomNavigationView.visibility =
+            View.VISIBLE else bottomNavigationView.visibility = View.GONE
+    }
+
+    private val navigationListener =
+        NavController.OnDestinationChangedListener { _, destination, _ ->
+            invalidateOptionsMenu()
+            hideToolbarSubtitle()
+            when (destination.id) {
+                R.id.homeClub -> {
+                    showBottomNavigation(true)
+                    showToolbar(true)
+                    showToolbarBackArrow(false)
+                }
+                R.id.detailLeagueFragment -> {
+                    showBottomNavigation(true)
+                    showToolbar(true)
+                    showToolbarBackArrow(true)
+                }
+                R.id.searchView -> {
+                    showBottomNavigation(true)
+                    showToolbar(true)
+                    showToolbarBackArrow(false)
+                }
+                R.id.favoriteFragment2 -> {
+                    showBottomNavigation(true)
+                    showToolbar(true)
+                    showToolbarBackArrow(false)
+                }
+                R.id.splashScreenFragment -> {
+                    showBottomNavigation(false)
+                    showToolbar(false)
+                    showToolbarBackArrow(false)
+                }
+                R.id.detailMatchFragment -> {
+                    showBottomNavigation(true)
+                    showToolbar(true)
+                    showToolbarBackArrow(true)
+                }
+                else -> {
+                    showToolbar(false)
+                    showToolbarBackArrow(false)
+                }
+            }
+        }
 
     private fun showToolbar(shouldShow: Boolean) {
         if (shouldShow) toolbar.visibility = View.VISIBLE else toolbar.visibility = View.GONE
@@ -88,6 +110,9 @@ class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
     override fun onBackPressed() {
         when (navController.currentDestination?.id) {
             R.id.detailLeagueFragment -> navController.navigate(R.id.homeClub)
+            R.id.splashScreenFragment, R.id.favoriteFragment2 -> {
+                binding.contentMain.bottomNavigationView.selectedItemId = R.id.homeClub
+            }
             else -> {
                 navController.navigateUp()
             }
@@ -96,7 +121,7 @@ class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
 
     override fun updateTitle(title: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+}
 }
 
 interface TempToolbarTitleListener {

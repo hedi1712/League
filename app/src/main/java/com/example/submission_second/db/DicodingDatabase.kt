@@ -9,7 +9,6 @@ import com.example.submission_second.db.entity.EntityFavorite
 
 @Database(entities = arrayOf(EntityFavorite::class), version = 1)
 abstract class DicodingDatabase : RoomDatabase() {
-    
     abstract fun favoriteDao(): FavoriteDao
 
     companion object {
@@ -18,15 +17,12 @@ abstract class DicodingDatabase : RoomDatabase() {
             if (INSTANCE == null) {
                 synchronized(DicodingDatabase::class) {
                     INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        DicodingDatabase::class.java,
-                        "database"
+                        context.applicationContext, DicodingDatabase::class.java,
+                        "favorite.db"
                     ).build()
                 }
             }
             return INSTANCE
         }
-
-
     }
 }

@@ -1,12 +1,9 @@
 package com.example.submission_second.util
 
-import android.view.Gravity.apply
-import android.view.View
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.submission_second.R
 

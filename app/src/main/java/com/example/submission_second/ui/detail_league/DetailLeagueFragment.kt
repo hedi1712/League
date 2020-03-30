@@ -1,26 +1,28 @@
 package com.example.submission_second.ui.detail_league
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
-import com.example.submission_second.databinding.FragmentDetailLeagueBinding
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.submission_second.R
 import com.example.submission_second.adapter.RecyclerViewNextmatchAdapter
 import com.example.submission_second.adapter.RecyclerViewPreviousMatchAdapter
+import com.example.submission_second.databinding.FragmentDetailLeagueBinding
 import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
+import com.example.submission_second.util.ViewModelFactory
 
 
 class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatchPressed,
@@ -28,9 +30,9 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
 
     private var leagueId: String = ""
     private var leagueName: String = ""
-    private var leagueUrl: String? = ""
     private lateinit var viewModel: DetailLeagueViewModel
     private lateinit var binding: FragmentDetailLeagueBinding
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private val adapterNextMatch = RecyclerViewNextmatchAdapter(listOf(), this)
     private val adapterPreviousMatch = RecyclerViewPreviousMatchAdapter(listOf(), this)
 
@@ -38,8 +40,16 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(activity!!).get(DetailLeagueViewModel::class.java)
+        viewModelFactory = ViewModelFactory { DetailLeagueViewModel(activity!!) }
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(DetailLeagueViewModel::class.java)
         binding = FragmentDetailLeagueBinding.inflate(inflater, container, false)
+        viewModel.getMessage.observe(viewLifecycleOwner, Observer {
+            it.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            }
+        })
+        binding.executePendingBindings()
         return binding.root
     }
 
@@ -54,13 +64,13 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
             (activity as AppCompatActivity).supportActionBar!!.title = leagueName
         }
         storeLeagueId(leagueId)
-        viewModel.getDataLeague.observe(this, Observer {
+        viewModel.getDataLeague.observe(viewLifecycleOwner, Observer {
             it?.let {
                 binding.leagueInfo.text = it[0].strDescriptionEN
                 loadImageGlide(it[0].strBadge)
             }
         })
-        viewModel.getNextMatch.observe(this, Observer {
+        viewModel.getNextMatch.observe(viewLifecycleOwner, Observer {
             it?.let {
                 showData()
                 if (it.isNullOrEmpty()) {
@@ -71,7 +81,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
 
             }
         })
-        viewModel.getPreviousMatch.observe(this, Observer {
+        viewModel.getPreviousMatch.observe(viewLifecycleOwner, Observer {
             it?.let {
                 showData()
                 if (it.isNullOrEmpty()) {
@@ -105,30 +115,38 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         adapterNextMatch.refreshData(response)
     }
 
-    fun storeLeagueId(leagueId: String) {
+    private fun storeLeagueId(leagueId: String) {
         viewModel.getDetailLeagueData(leagueId)
         viewModel.getNextMatchData(leagueId)
         viewModel.getPreviousMatch(leagueId)
     }
 
-    fun initRecyclerViewNextMatch() {
+    private fun initRecyclerViewNextMatch() {
         val layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
         binding.recyclerViewNextMatch.layoutManager = layoutManager
         binding.recyclerViewNextMatch.adapter = adapterNextMatch
     }
 
-    fun initRecyclerViewPreviousMatch() {
+    private fun initRecyclerViewPreviousMatch() {
         val layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
         binding.recyclerViewPreviousMatch.layoutManager = layoutManager
         binding.recyclerViewPreviousMatch.adapter = adapterPreviousMatch
     }
 
     override fun onPressed(model: Event, position: Int) {
-        goToDetail(model.idEvent!!)
+        goToDetail(model.idEvent)
+    }
+
+    override fun favoriteTeam(model: Event) {
+        viewModel.storeToDatabaseNextMatch(model)
     }
 
     override fun onPressed(model: PreviousMatchData, position: Int) {
-        goToDetail(model.idEvent!!)
+        goToDetail(model.idEvent)
+    }
+
+    override fun onFavorite(model: PreviousMatchData) {
+        viewModel.storeToDatabasePreviousMatch(model)
     }
 
     private fun goToDetail(leagueId: String) {
@@ -136,12 +154,12 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         findNavController().navigate(action)
     }
 
-    fun showData() {
+    private fun showData() {
         binding.showData = true
         binding.progressBar.visibility = View.GONE
     }
 
-    fun hideData() {
+    private fun hideData() {
         binding.showData = false
         binding.progressBar.visibility = View.VISIBLE
     }

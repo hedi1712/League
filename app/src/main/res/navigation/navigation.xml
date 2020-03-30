@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/homeClub">
+    app:startDestination="@id/splashScreenFragment">
 
     <fragment
         android:id="@+id/homeClub"
@@ -64,12 +64,30 @@
     <fragment
         android:id="@+id/detailMatchFragment"
         android:name="com.example.submission_second.ui.detail_match.DetailMatchFragment"
-        android:label="fragment_detail_match"
+        android:label="Detail Match"
         tools:layout="@layout/fragment_detail_match" >
         <argument
             android:name="leagueId"
             app:argType="string"
             android:defaultValue="null" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.example.submission_second.SplashScreenFragment"
+        android:label="fragment_splash_screen"
+        tools:layout="@layout/fragment_splash_screen" >
+        <action
+            android:id="@+id/actionLaunchTohomeClub"
+            app:destination="@id/homeClub" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment2"
+        android:name="com.example.submission_second.ui.favorite.FavoriteFragment"
+        android:label="favorite match"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment2_to_detailMatchFragment"
+            app:destination="@id/detailMatchFragment" />
     </fragment>
 
 </navigation>

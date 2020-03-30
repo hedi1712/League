@@ -5,9 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.submission_second.databinding.ListPreviousMatchBinding
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
-import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
-import com.example.submission_second.ui.previous_match.PreviousMatch
-import com.example.submission_second.util.toddMMyyyy
 
 class RecyclerViewPreviousMatchAdapter(
     var previousMatch: List<PreviousMatchData>,
@@ -16,10 +13,12 @@ class RecyclerViewPreviousMatchAdapter(
     RecyclerView.Adapter<RecyclerViewPreviousMatchAdapter.ViewHolder>() {
     class ViewHolder(val binding: ListPreviousMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: PreviousMatchData, position: Int, listener: OnPreviousMatch
+        fun bind(
+            model: PreviousMatchData, position: Int, listener: OnPreviousMatch
         ) {
             binding.model = model
             binding.executePendingBindings()
+            binding.favorite.setOnClickListener { listener.onFavorite(model) }
             binding.root.setOnClickListener {
                 listener.onPressed(model, position)
 
@@ -29,7 +28,7 @@ class RecyclerViewPreviousMatchAdapter(
 
     interface OnPreviousMatch {
         fun onPressed(model: PreviousMatchData, position: Int)
-
+        fun onFavorite(model: PreviousMatchData)
     }
 
     override fun onCreateViewHolder(

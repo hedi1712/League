@@ -14,9 +14,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class SearchViewModelFragment(application: Context) : ViewModel() {
+class SearchViewModelFragment(private val database: DicodingDatabase) : ViewModel() {
 
-    private var database: DicodingDatabase? = null
 
     val networkConfig = NetworkConfig()
     private val mCompositeDisposable = CompositeDisposable()
@@ -28,10 +27,6 @@ class SearchViewModelFragment(application: Context) : ViewModel() {
     private val _getMessage = MutableLiveData<String>()
     val getMessage: LiveData<String>
         get() = _getMessage
-
-    init {
-        database = DicodingDatabase.buildDatabase(application.applicationContext)
-    }
 
     fun storeToDatabase(searchData: SearchMatchData) {
         val data = EntityFavorite(

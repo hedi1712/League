@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.submission_second.R
 import com.example.submission_second.adapter.RecyclerSearch
 import com.example.submission_second.databinding.FragmentSearchViewBinding
+import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.model.model.search_match.SearchMatchData
 import com.example.submission_second.util.ViewModelFactory
 
@@ -50,10 +51,10 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModelFactory = ViewModelFactory { SearchViewModelFragment(activity!!) }
+        val database = DicodingDatabase.buildDatabase(activity!!.applicationContext)
+        viewModelFactory = ViewModelFactory { SearchViewModelFragment(database!!) }
         binding = FragmentSearchViewBinding.inflate(inflater, container, false)
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(SearchViewModelFragment::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModelFragment::class.java)
         binding.executePendingBindings()
         return binding.root
     }
@@ -114,11 +115,11 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
         binding.progressBar.visibility = View.INVISIBLE
     }
 
-    override fun OnClick(searchData: SearchMatchData, position: Int) {
+    override fun onClick(searchData: SearchMatchData, position: Int) {
         passingDataToDetail(searchData.idEvent)
     }
 
-    override fun favorite(searchData: SearchMatchData) {
+    override fun favoriteToDatabase(searchData: SearchMatchData) {
         viewModel.storeToDatabase(searchData)
     }
 }

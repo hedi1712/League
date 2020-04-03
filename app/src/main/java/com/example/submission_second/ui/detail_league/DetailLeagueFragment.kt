@@ -20,6 +20,7 @@ import com.example.submission_second.R
 import com.example.submission_second.adapter.RecyclerViewNextmatchAdapter
 import com.example.submission_second.adapter.RecyclerViewPreviousMatchAdapter
 import com.example.submission_second.databinding.FragmentDetailLeagueBinding
+import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
 import com.example.submission_second.util.ViewModelFactory
@@ -40,7 +41,8 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModelFactory = ViewModelFactory { DetailLeagueViewModel(activity!!) }
+        val database = DicodingDatabase.buildDatabase(activity!!.applicationContext)
+        viewModelFactory = ViewModelFactory { DetailLeagueViewModel(database!!) }
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(DetailLeagueViewModel::class.java)
         binding = FragmentDetailLeagueBinding.inflate(inflater, container, false)

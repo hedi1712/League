@@ -1,6 +1,5 @@
 package com.example.submission_second.ui.detail_league
 
-import android.content.Context
 import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,9 +19,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class DetailLeagueViewModel(application: Context) : ViewModel() {
-
-    private var database: DicodingDatabase? = null
+class DetailLeagueViewModel(private val database: DicodingDatabase) : ViewModel() {
 
     val networkConfig = NetworkConfig()
     private val mCompositeDisposable = CompositeDisposable()
@@ -43,10 +40,6 @@ class DetailLeagueViewModel(application: Context) : ViewModel() {
     private val _getMessage = MutableLiveData<String>()
     val getMessage: LiveData<String>
         get() = _getMessage
-
-    init {
-        database = DicodingDatabase.buildDatabase(application.applicationContext)
-    }
 
     fun getDetailLeagueData(leagueId: String) {
         mCompositeDisposable.add(

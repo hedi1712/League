@@ -1,6 +1,7 @@
 package com.example.submission_second.ui.detail_league
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.example.submission_second.api.ApiService
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.model.model.league_detail.LeagueDetailData
@@ -10,7 +11,6 @@ import com.example.submission_second.model.model.next_match.NextMatchResponse
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
 import com.example.submission_second.ui.utils.FakeData
-import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Observable
 import io.reactivex.android.plugins.RxAndroidPlugins
@@ -27,7 +27,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-internal class DetailLeagueViewModelTest {
+class DetailLeagueViewModelTest {
 
     @get:Rule
     val rule: TestRule = InstantTaskExecutorRule()
@@ -41,6 +41,14 @@ internal class DetailLeagueViewModelTest {
     @Mock
     private lateinit var viewModel: DetailLeagueViewModel
 
+    @Mock
+    private lateinit var getDataLeague: Observer<List<LeagueDetailData>>
+
+    @Mock
+    private lateinit var getNextMatch: Observer<List<Event>>
+
+    @Mock
+    private lateinit var getPreviousMatch: Observer<List<PreviousMatchData>>
 
     private val idleague: String = ""
 
@@ -57,7 +65,7 @@ internal class DetailLeagueViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = DetailLeagueViewModel(database)
+        viewModel = DetailLeagueViewModel(database, apiService)
 
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
         RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
@@ -66,28 +74,30 @@ internal class DetailLeagueViewModelTest {
 
     }
 
-
     @Test
     fun getDetailLeagueData() {
         Mockito.lenient().`when`(apiService.getDetailLeagueWithId(idleague))
             .thenReturn(Observable.just(dataDetail))
         viewModel.getDetailLeagueData(idleague)
-        verify(apiService, never()).getDetailLeagueWithId(idleague)
+        viewModel.getDataLeague.observeForever(getDataLeague)
+        verify(apiService).getDetailLeagueWithId(idleague)
     }
 
     @Test
     fun getNextMatchData() {
         Mockito.lenient().`when`(apiService.getNextMatchWithId(fakeDataNext.idEvent))
             .thenReturn(Observable.just(dataNext))
-        viewModel.getDetailLeagueData(fakeDataNext.idEvent)
-        verify(apiService, never()).getNextMatchWithId(fakeDataNext.idEvent)
+        viewModel.getNextMatchData(fakeDataNext.idEvent)
+        viewModel.getNextMatch.observeForever(getNextMatch)
+        verify(apiService).getNextMatchWithId(fakeDataNext.idEvent)
     }
 
     @Test
     fun getPreviousMatch() {
         Mockito.lenient().`when`(apiService.getPreviousMatchWithId(fakeDataNext.idEvent))
             .thenReturn(Observable.just(dataPrevious))
-        viewModel.getDetailLeagueData(fakeDataPrevious.idEvent)
-        verify(apiService, never()).getPreviousMatchWithId(fakeDataPrevious.idEvent)
+        viewModel.getPreviousMatch(fakeDataPrevious.idEvent)
+        viewModel.getPreviousMatch.observeForever(getPreviousMatch)
+        verify(apiService).getPreviousMatchWithId(fakeDataPrevious.idEvent)
     }
 }

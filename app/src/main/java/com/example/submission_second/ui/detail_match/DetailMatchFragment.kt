@@ -6,25 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.submission_second.R
 import com.example.submission_second.databinding.FragmentDetailMatchBinding
+import com.example.submission_second.module.Api
+import com.example.submission_second.util.ViewModelFactory
 import com.example.submission_second.util.toddMMyyyy
 
 
 class DetailMatchFragment : Fragment() {
     private lateinit var binding: FragmentDetailMatchBinding
     private lateinit var viewModel: DetailMatchViewModel
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private var leagueId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(activity!!).get(DetailMatchViewModel::class.java)
+        viewModelFactory = ViewModelFactory { DetailMatchViewModel(Api.retrofitService) }
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(DetailMatchViewModel::class.java)
         binding = FragmentDetailMatchBinding.inflate(inflater, container, false)
         return binding.root
     }

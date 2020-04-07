@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,11 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.submission_second.adapter.RecyclerViewListLeague
 import com.example.submission_second.databinding.FragmentHomeClubBinding
 import com.example.submission_second.model.model.league_list.LeagueData
+import com.example.submission_second.module.Api
+import com.example.submission_second.util.ViewModelFactory
 
 class LeagueListFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePressedListener {
 
     private lateinit var binding: FragmentHomeClubBinding
     private lateinit var viewModel: LeagueListViewModel
+    private lateinit var viewModelFactory: ViewModelProvider.Factory
     private val adapter = RecyclerViewListLeague(listOf(), this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +33,8 @@ class LeagueListFragment : Fragment(), RecyclerViewListLeague.OnListLeaguePresse
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(activity!!).get(LeagueListViewModel::class.java)
+        viewModelFactory = ViewModelFactory{LeagueListViewModel(Api.retrofitService)}
+        viewModel = ViewModelProviders.of(this,viewModelFactory).get(LeagueListViewModel::class.java)
         binding = FragmentHomeClubBinding.inflate(inflater, container, false)
         return binding.root
 

@@ -1,13 +1,11 @@
 package com.example.submission_second.ui.search_view
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.example.submission_second.api.ApiService
 import com.example.submission_second.db.DicodingDatabase
-import com.example.submission_second.model.model.league_list.LeagueData
-import com.example.submission_second.model.model.league_list.LeagueListResponse
 import com.example.submission_second.model.model.search_match.SearchMatchData
 import com.example.submission_second.model.model.search_match.SearchMatchResponse
-import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Observable
 import io.reactivex.android.plugins.RxAndroidPlugins
@@ -38,15 +36,19 @@ class SearchViewModelFragmentTest {
     @Mock
     private lateinit var viewModel: SearchViewModelFragment
 
+    @Mock
+    lateinit var observer: Observer<List<SearchMatchData>>
+
 
     private val string: String = "arsenal"
 
-    private val dataTest = SearchMatchResponse(listOf(SearchMatchData("1234", "makan", "", "", "","","","")))
+    private val dataTest =
+        SearchMatchResponse(listOf(SearchMatchData("1234", "makan", "", "", "", "", "", "")))
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        viewModel = SearchViewModelFragment(database)
+        viewModel = SearchViewModelFragment(database, apiService)
 
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
         RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
@@ -56,8 +58,10 @@ class SearchViewModelFragmentTest {
 
     @Test
     fun sendQueryToApi() {
-        Mockito.`when`(apiService.getSearchMatchWithId(string)).thenReturn(Observable.just(dataTest))
+        Mockito.`when`(apiService.getSearchMatchWithId(string))
+            .thenReturn(Observable.just(dataTest))
         viewModel.sendQueryToApi(string)
-        verify(apiService, never()).getSearchMatchWithId(string)
+        viewModel.getSearchList.observeForever(observer)
+        verify(apiService).getSearchMatchWithId(string)
     }
 }

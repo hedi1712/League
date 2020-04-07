@@ -3,15 +3,15 @@ package com.example.submission_second.ui.detail_match
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.submission_second.api.ApiService
 import com.example.submission_second.model.model.detail_match.*
-import com.example.submission_second.module.NetworkConfig
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class DetailMatchViewModel : ViewModel() {
-    private val networkConfig = NetworkConfig()
+class DetailMatchViewModel(private val api: ApiService) : ViewModel() {
+
     private val mCompositeDisposable = CompositeDisposable()
 
     private val _getMatchDetail = MutableLiveData<List<DetailMatchResponse.DetailMatchData>>()
@@ -28,7 +28,7 @@ class DetailMatchViewModel : ViewModel() {
 
     fun fetchDetailMatch(leagueId: String) {
         mCompositeDisposable.addAll(
-            networkConfig.apiService().getDetailMatchWithId(leagueId)
+            api.getDetailMatchWithId(leagueId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<DetailMatchResponse>() {
@@ -47,7 +47,7 @@ class DetailMatchViewModel : ViewModel() {
 
     fun fetchBadgeHome(leagueId: String) {
         mCompositeDisposable.addAll(
-            networkConfig.apiService().getBadgeHomeWithId(leagueId)
+            api.getBadgeHomeWithId(leagueId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<GetBadgeHomeTeamResponse>() {
@@ -66,7 +66,7 @@ class DetailMatchViewModel : ViewModel() {
 
     fun fetchBadgeAway(leagueId: String) {
         mCompositeDisposable.addAll(
-            networkConfig.apiService().getBadgeAwayWithId(leagueId)
+            api.getBadgeAwayWithId(leagueId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<GetBadgeAwayTeamResponse>() {

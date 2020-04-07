@@ -3,16 +3,15 @@ package com.example.submission_second.ui.league_list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.submission_second.api.ApiService
 import com.example.submission_second.model.model.league_list.LeagueListResponse
-import com.example.submission_second.module.NetworkConfig
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class LeagueListViewModel : ViewModel() {
+class LeagueListViewModel(private val api : ApiService) : ViewModel() {
 
-   private val networkConfig = NetworkConfig()
     private val mCompositeDisposable = CompositeDisposable()
     private val _getData = MutableLiveData<LeagueListResponse>()
     val getData: LiveData<LeagueListResponse>
@@ -20,7 +19,7 @@ class LeagueListViewModel : ViewModel() {
 
     fun getLeagueData() {
         mCompositeDisposable.add(
-            networkConfig.apiService().getAllLeagueData("Soccer").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            api.getAllLeagueData("Soccer").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<LeagueListResponse>() {
                     override fun onNext(response: LeagueListResponse) {
                         setResultLeagueList(response)

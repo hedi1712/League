@@ -56,6 +56,11 @@ class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
             invalidateOptionsMenu()
             hideToolbarSubtitle()
             when (destination.id) {
+                R.id.splashScreenFragment -> {
+                    showBottomNavigation(false)
+                    showToolbar(false)
+                    showToolbarBackArrow(false)
+                }
                 R.id.homeClub -> {
                     showBottomNavigation(true)
                     showToolbar(true)
@@ -74,11 +79,6 @@ class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
                 R.id.favoriteFragment2 -> {
                     showBottomNavigation(true)
                     showToolbar(true)
-                    showToolbarBackArrow(false)
-                }
-                R.id.splashScreenFragment -> {
-                    showBottomNavigation(false)
-                    showToolbar(false)
                     showToolbarBackArrow(false)
                 }
                 R.id.detailMatchFragment -> {
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
 
     override fun updateTitle(title: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-}
+    }
 }
 
 interface TempToolbarTitleListener {

@@ -4,6 +4,7 @@ import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.submission_second.api.ApiService
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.db.entity.EntityFavorite
 import com.example.submission_second.model.model.league_detail.LeagueDetailData
@@ -12,16 +13,15 @@ import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.next_match.NextMatchResponse
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
-import com.example.submission_second.module.NetworkConfig
 import com.example.submission_second.util.toddMMyyyy
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class DetailLeagueViewModel(private val database: DicodingDatabase) : ViewModel() {
+class DetailLeagueViewModel(private val database: DicodingDatabase, private val api: ApiService) :
+    ViewModel() {
 
-    val networkConfig = NetworkConfig()
     private val mCompositeDisposable = CompositeDisposable()
 
     private val _getDetailLeague = MutableLiveData<List<LeagueDetailData>>()
@@ -43,7 +43,7 @@ class DetailLeagueViewModel(private val database: DicodingDatabase) : ViewModel(
 
     fun getDetailLeagueData(leagueId: String) {
         mCompositeDisposable.add(
-            networkConfig.apiService().getDetailLeagueWithId(leagueId)
+            api.getDetailLeagueWithId(leagueId)
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -64,7 +64,7 @@ class DetailLeagueViewModel(private val database: DicodingDatabase) : ViewModel(
 
     fun getNextMatchData(leagueId: String) {
         mCompositeDisposable.add(
-            networkConfig.apiService().getNextMatchWithId(leagueId)
+            api.getNextMatchWithId(leagueId)
                 .map { transformNextData(it) }
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
@@ -107,7 +107,7 @@ class DetailLeagueViewModel(private val database: DicodingDatabase) : ViewModel(
 
     fun getPreviousMatch(leagueId: String) {
         mCompositeDisposable.add(
-            networkConfig.apiService().getPreviousMatchWithId(leagueId)
+            api.getPreviousMatchWithId(leagueId)
                 .map { transformPreviousData(it) }
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
@@ -158,7 +158,7 @@ class DetailLeagueViewModel(private val database: DicodingDatabase) : ViewModel(
             1
         )
         mCompositeDisposable.add(
-            database!!.favoriteDao().insertFavorite(data).subscribeOn(Schedulers.io())
+            database.favoriteDao().insertFavorite(data).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { _getMessage.value = "Success Save In Database" },
@@ -177,7 +177,7 @@ class DetailLeagueViewModel(private val database: DicodingDatabase) : ViewModel(
             3
         )
         mCompositeDisposable.add(
-            database!!.favoriteDao().insertFavorite(data).subscribeOn(Schedulers.io())
+            database.favoriteDao().insertFavorite(data).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { _getMessage.value = "Success Save In Database" },

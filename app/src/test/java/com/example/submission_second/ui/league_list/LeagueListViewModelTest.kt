@@ -1,14 +1,12 @@
 package com.example.submission_second.ui.league_list
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.example.submission_second.api.ApiService
 import com.example.submission_second.model.model.league_list.LeagueData
 import com.example.submission_second.model.model.league_list.LeagueListResponse
-import com.example.submission_second.ui.utils.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Observable
-import androidx.lifecycle.Observer
-import com.nhaarman.mockitokotlin2.never
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
@@ -18,7 +16,7 @@ import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -34,14 +32,27 @@ class LeagueListViewModelTest {
     @Mock
     private lateinit var viewModel: LeagueListViewModel
 
+    @Mock
+    lateinit var observer: Observer<LeagueListResponse>
+
     private val string: String = "Soccer"
 
-    private val dataTest = LeagueListResponse(listOf(LeagueData("1234", "makan", "", "", "")))
+    private val dataTest = LeagueListResponse(
+        listOf(
+            LeagueData(
+                "4617",
+                "Albanian Superliga",
+                "Superliga",
+                "Soccer",
+                "https://www.thesportsdb.com/images/media/league/badge/6my1u31578828133.png"
+            )
+        )
+    )
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        viewModel = LeagueListViewModel()
+        viewModel = LeagueListViewModel(apiService)
 
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
         RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
@@ -51,8 +62,10 @@ class LeagueListViewModelTest {
 
     @Test
     fun getLeagueData() {
-        Mockito.`when`(apiService.getAllLeagueData(string)).thenReturn(Observable.just(dataTest))
+        `when`(apiService.getAllLeagueData(string)).thenReturn(Observable.just(dataTest))
         viewModel.getLeagueData()
-        verify(apiService, never()).getAllLeagueData(string)
+        viewModel.getData.observeForever(observer)
+        verify(apiService).getAllLeagueData(string)
     }
+
 }

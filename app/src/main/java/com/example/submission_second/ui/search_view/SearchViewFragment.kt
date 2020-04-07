@@ -18,6 +18,7 @@ import com.example.submission_second.adapter.RecyclerSearch
 import com.example.submission_second.databinding.FragmentSearchViewBinding
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.model.model.search_match.SearchMatchData
+import com.example.submission_second.module.Api
 import com.example.submission_second.util.ViewModelFactory
 
 
@@ -52,7 +53,7 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
         savedInstanceState: Bundle?
     ): View? {
         val database = DicodingDatabase.buildDatabase(activity!!.applicationContext)
-        viewModelFactory = ViewModelFactory { SearchViewModelFragment(database!!) }
+        viewModelFactory = ViewModelFactory { SearchViewModelFragment(database!!,Api.retrofitService) }
         binding = FragmentSearchViewBinding.inflate(inflater, container, false)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModelFragment::class.java)
         binding.executePendingBindings()

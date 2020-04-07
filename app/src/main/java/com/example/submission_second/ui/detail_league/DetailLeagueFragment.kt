@@ -23,6 +23,7 @@ import com.example.submission_second.databinding.FragmentDetailLeagueBinding
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
+import com.example.submission_second.module.Api
 import com.example.submission_second.util.ViewModelFactory
 
 
@@ -42,7 +43,7 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         savedInstanceState: Bundle?
     ): View? {
         val database = DicodingDatabase.buildDatabase(activity!!.applicationContext)
-        viewModelFactory = ViewModelFactory { DetailLeagueViewModel(database!!) }
+        viewModelFactory = ViewModelFactory { DetailLeagueViewModel(database!!,Api.retrofitService) }
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(DetailLeagueViewModel::class.java)
         binding = FragmentDetailLeagueBinding.inflate(inflater, container, false)

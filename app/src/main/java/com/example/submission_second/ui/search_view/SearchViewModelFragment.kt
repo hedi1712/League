@@ -1,23 +1,22 @@
 package com.example.submission_second.ui.search_view
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.submission_second.api.ApiService
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.db.entity.EntityFavorite
 import com.example.submission_second.model.model.search_match.SearchMatchData
 import com.example.submission_second.model.model.search_match.SearchMatchResponse
-import com.example.submission_second.module.NetworkConfig
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class SearchViewModelFragment(private val database: DicodingDatabase) : ViewModel() {
+class SearchViewModelFragment(private val database: DicodingDatabase, private val api: ApiService) :
+    ViewModel() {
 
 
-    val networkConfig = NetworkConfig()
     private val mCompositeDisposable = CompositeDisposable()
 
     private val _getSearchList = MutableLiveData<List<SearchMatchData>>()
@@ -39,7 +38,7 @@ class SearchViewModelFragment(private val database: DicodingDatabase) : ViewMode
             2
         )
         mCompositeDisposable.add(
-            database!!.favoriteDao().insertFavorite(data).subscribeOn(Schedulers.io())
+            database.favoriteDao().insertFavorite(data).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { _getMessage.value = "Success Save In Database" },
@@ -49,7 +48,7 @@ class SearchViewModelFragment(private val database: DicodingDatabase) : ViewMode
 
     fun sendQueryToApi(query: String?) {
         mCompositeDisposable.add(
-            networkConfig.apiService().getSearchMatchWithId(query!!)
+           api.getSearchMatchWithId(query!!)
                 .map { mapData(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -37,7 +37,7 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
         viewModel.getSearchList.observe(viewLifecycleOwner, Observer {
             it.let {
                 hideLoading()
-                sentDataToAdapter(it)
+                sentDataToAdapter(it.event)
             }
         })
         viewModel.getMessage.observe(viewLifecycleOwner, Observer {

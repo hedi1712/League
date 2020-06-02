@@ -5,11 +5,12 @@ import androidx.lifecycle.Observer
 import com.example.submission_second.api.ApiService
 import com.example.submission_second.model.model.league_list.LeagueData
 import com.example.submission_second.model.model.league_list.LeagueListResponse
-import com.nhaarman.mockitokotlin2.verify
+import com.example.submission_second.ui.utils.mock
 import io.reactivex.Observable
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,18 +34,19 @@ class LeagueListViewModelTest {
     private lateinit var viewModel: LeagueListViewModel
 
     @Mock
-    lateinit var observer: Observer<LeagueListResponse>
+    private val observer: Observer<LeagueListResponse> = mock()
 
-    private val string: String = "Soccer"
+    private
+    val string: String = "Soccer"
 
     private val dataTest = LeagueListResponse(
         listOf(
             LeagueData(
                 "4617",
                 "Albanian Superliga",
-                "Superliga",
-                "Soccer",
-                "https://www.thesportsdb.com/images/media/league/badge/6my1u31578828133.png"
+                "",
+                "",
+                ""
             )
         )
     )
@@ -63,9 +65,11 @@ class LeagueListViewModelTest {
     @Test
     fun getLeagueData() {
         `when`(apiService.getAllLeagueData(string)).thenReturn(Observable.just(dataTest))
-        viewModel.getLeagueData()
-        viewModel.getData.observeForever(observer)
-        verify(apiService).getAllLeagueData(string)
+        with(viewModel) {
+            getLeagueData()
+            setResultLeagueList(dataTest)
+            getData.observeForever(observer)
+            Assert.assertEquals(dataTest, getData.value)
+        }
     }
-
 }

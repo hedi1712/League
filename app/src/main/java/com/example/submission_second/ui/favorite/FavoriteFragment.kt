@@ -39,7 +39,6 @@ class FavoriteFragment : Fragment(), RecyclerViewFavorite.OnItemPressed {
         initRecycler()
         loadDataDatabase()
         loadMessage()
-
     }
 
     private fun initRecycler() {

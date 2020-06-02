@@ -6,11 +6,14 @@ import com.example.submission_second.api.ApiService
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.model.model.search_match.SearchMatchData
 import com.example.submission_second.model.model.search_match.SearchMatchResponse
+import com.example.submission_second.ui.utils.FakeData
+import com.example.submission_second.ui.utils.mock
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Observable
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,8 +40,7 @@ class SearchViewModelFragmentTest {
     private lateinit var viewModel: SearchViewModelFragment
 
     @Mock
-    lateinit var observer: Observer<List<SearchMatchData>>
-
+    private val observer: Observer<SearchMatchResponse> = mock()
 
     private val string: String = "arsenal"
 
@@ -49,6 +51,7 @@ class SearchViewModelFragmentTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         viewModel = SearchViewModelFragment(database, apiService)
+        viewModel.getSearchList.observeForever(observer)
 
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
         RxJavaPlugins.setComputationSchedulerHandler { Schedulers.trampoline() }
@@ -60,8 +63,11 @@ class SearchViewModelFragmentTest {
     fun sendQueryToApi() {
         Mockito.`when`(apiService.getSearchMatchWithId(string))
             .thenReturn(Observable.just(dataTest))
-        viewModel.sendQueryToApi(string)
-        viewModel.getSearchList.observeForever(observer)
-        verify(apiService).getSearchMatchWithId(string)
+        with(viewModel) {
+            sendQueryToApi(string)
+            mapData(dataTest)
+            getSearchList.observeForever(observer)
+            Assert.assertEquals(dataTest, getSearchList.value)
+        }
     }
 }

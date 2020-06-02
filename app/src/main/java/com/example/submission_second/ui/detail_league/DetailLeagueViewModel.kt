@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.example.submission_second.api.ApiService
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.db.entity.EntityFavorite
-import com.example.submission_second.model.model.league_detail.LeagueDetailData
 import com.example.submission_second.model.model.league_detail.LeagueDetailResponse
 import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.next_match.NextMatchResponse
@@ -24,17 +23,17 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
 
     private val mCompositeDisposable = CompositeDisposable()
 
-    private val _getDetailLeague = MutableLiveData<List<LeagueDetailData>>()
-    val getDataLeague: LiveData<List<LeagueDetailData>>
+    private val _getDetailLeague = MutableLiveData<LeagueDetailResponse>()
+    val getDataLeague: LiveData<LeagueDetailResponse>
         get() = _getDetailLeague
 
-    private val _getNextMatch = MutableLiveData<List<Event>>()
-    val getNextMatch: LiveData<List<Event>>
+    private val _getNextMatch = MutableLiveData<NextMatchResponse>()
+    val getNextMatch: LiveData<NextMatchResponse>
         get() = _getNextMatch
 
     private val _getPreviousMatch =
-        MutableLiveData<List<PreviousMatchData>>()
-    val getPreviousMatch: LiveData<List<PreviousMatchData>>
+        MutableLiveData<PreviousMatchResponse>()
+    val getPreviousMatch: LiveData<PreviousMatchResponse>
         get() = _getPreviousMatch
 
     private val _getMessage = MutableLiveData<String>()
@@ -49,7 +48,7 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<LeagueDetailResponse>() {
                     override fun onNext(response: LeagueDetailResponse) {
-                        setResultLeagueList(response.leagues)
+                        setResultLeagueList(response)
                     }
 
                     override fun onComplete() {
@@ -65,12 +64,12 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
     fun getNextMatchData(leagueId: String) {
         mCompositeDisposable.add(
             api.getNextMatchWithId(leagueId)
-                .map { transformNextData(it) }
+//                .map { transformNextData(it) }
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<List<Event>>() {
-                    override fun onNext(response: List<Event>) {
+                .subscribeWith(object : DisposableObserver<NextMatchResponse>() {
+                    override fun onNext(response: NextMatchResponse) {
                         ProgressBar.INVISIBLE
                         response.let { listNextMatch(response) }
                     }
@@ -108,15 +107,15 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
     fun getPreviousMatch(leagueId: String) {
         mCompositeDisposable.add(
             api.getPreviousMatchWithId(leagueId)
-                .map { transformPreviousData(it) }
+//                .map { transformPreviousData(it) }
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<List<PreviousMatchData>>() {
+                .subscribeWith(object : DisposableObserver<PreviousMatchResponse>() {
                     override fun onComplete() {
                     }
 
-                    override fun onNext(response: List<PreviousMatchData>) {
+                    override fun onNext(response: PreviousMatchResponse) {
                         ProgressBar.INVISIBLE
                         response.let { listPreviousMatch(it) }
                     }
@@ -185,15 +184,15 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
         )
     }
 
-    private fun listNextMatch(events: List<Event>) {
+    fun listNextMatch(events: NextMatchResponse) {
         _getNextMatch.postValue(events)
     }
 
-    fun setResultLeagueList(leagueDetailData: List<LeagueDetailData>) {
+    fun setResultLeagueList(leagueDetailData: LeagueDetailResponse) {
         _getDetailLeague.postValue(leagueDetailData)
     }
 
-    fun listPreviousMatch(leagueDetailData: List<PreviousMatchData>) {
+    fun listPreviousMatch(leagueDetailData: PreviousMatchResponse) {
         _getPreviousMatch.postValue(leagueDetailData)
     }
 

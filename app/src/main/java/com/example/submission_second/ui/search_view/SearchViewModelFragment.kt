@@ -19,8 +19,8 @@ class SearchViewModelFragment(private val database: DicodingDatabase, private va
 
     private val mCompositeDisposable = CompositeDisposable()
 
-    private val _getSearchList = MutableLiveData<List<SearchMatchData>>()
-    val getSearchList: LiveData<List<SearchMatchData>>
+    private val _getSearchList = MutableLiveData<SearchMatchResponse>()
+    val getSearchList: LiveData<SearchMatchResponse>
         get() = _getSearchList
 
     private val _getMessage = MutableLiveData<String>()
@@ -49,18 +49,15 @@ class SearchViewModelFragment(private val database: DicodingDatabase, private va
     fun sendQueryToApi(query: String?) {
         mCompositeDisposable.add(
            api.getSearchMatchWithId(query!!)
-                .map { mapData(it) }
+//                .map { mapData(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<List<SearchMatchData>>() {
+                .subscribeWith(object : DisposableObserver<SearchMatchResponse>() {
                     override fun onComplete() {
                     }
 
-                    override fun onNext(response: List<SearchMatchData>) {
-                        if (response.isNullOrEmpty()) {
-                        } else {
-                            response.let { setResult(it) }
-                        }
+                    override fun onNext(response: SearchMatchResponse) {
+                        setResult(response)
                     }
 
                     override fun onError(e: Throwable) {
@@ -69,7 +66,7 @@ class SearchViewModelFragment(private val database: DicodingDatabase, private va
         )
     }
 
-    private fun mapData(response: SearchMatchResponse): List<SearchMatchData> {
+    fun mapData(response: SearchMatchResponse): List<SearchMatchData> {
         val searchData = mutableListOf<SearchMatchData>()
         for (i in response.event) {
             if (i.strSport.equals("Soccer")) {
@@ -90,7 +87,7 @@ class SearchViewModelFragment(private val database: DicodingDatabase, private va
         return searchData
     }
 
-    private fun setResult(data: List<SearchMatchData>) {
+    fun setResult(data: SearchMatchResponse) {
         _getSearchList.postValue(data)
     }
 

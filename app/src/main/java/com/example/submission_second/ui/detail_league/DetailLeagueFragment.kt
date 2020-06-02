@@ -43,7 +43,8 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         savedInstanceState: Bundle?
     ): View? {
         val database = DicodingDatabase.buildDatabase(activity!!.applicationContext)
-        viewModelFactory = ViewModelFactory { DetailLeagueViewModel(database!!,Api.retrofitService) }
+        viewModelFactory =
+            ViewModelFactory { DetailLeagueViewModel(database!!, Api.retrofitService) }
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(DetailLeagueViewModel::class.java)
         binding = FragmentDetailLeagueBinding.inflate(inflater, container, false)
@@ -69,17 +70,17 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         storeLeagueId(leagueId)
         viewModel.getDataLeague.observe(viewLifecycleOwner, Observer {
             it?.let {
-                binding.leagueInfo.text = it[0].strDescriptionEN
-                loadImageGlide(it[0].strBadge)
+                binding.leagueInfo.text = it.leagues[0].strDescriptionEN
+                loadImageGlide(it.leagues[0].strBadge)
             }
         })
         viewModel.getNextMatch.observe(viewLifecycleOwner, Observer {
             it?.let {
                 showData()
-                if (it.isNullOrEmpty()) {
+                if (it.events.isNullOrEmpty()) {
                     binding.recyclerViewNextMatch.visibility = View.INVISIBLE
                 } else {
-                    passDataToAdapterNextMatch(it)
+                    passDataToAdapterNextMatch(it.events)
                 }
 
             }
@@ -87,10 +88,10 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         viewModel.getPreviousMatch.observe(viewLifecycleOwner, Observer {
             it?.let {
                 showData()
-                if (it.isNullOrEmpty()) {
+                if (it.events.isNullOrEmpty()) {
                     binding.recyclerViewPreviousMatch.visibility = View.INVISIBLE
                 } else {
-                    passDataToAdapterPreviousMatch(it)
+                    passDataToAdapterPreviousMatch(it.events)
                 }
 
             }

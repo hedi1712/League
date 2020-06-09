@@ -36,4 +36,13 @@ interface ApiService {
 
     @GET("lookupteam.php")
     fun getBadgeAwayWithId(@Query("id") id: String): Observable<GetBadgeAwayTeamResponse>
+
+    @GET("lookup_all_teams.php")
+    fun getListTeamWithId(@Query("id") id: String): Observable<GetBadgeAwayTeamResponse>
+
+//    @GET("lookup_all_teams.php")
+//    fun getListTeamWithId(@Query("id") id: String): Observable<GetBadgeAwayTeamResponse>
+
+
+
 }

@@ -11,5 +11,7 @@
     <string name="string_search">Search Match</string>
     <string name="favorite">favorite</string>
     <string name="delete">Delete</string>
+    <string name="classment">Standings</string>
+    <string name="list_team">Teams</string>
 
 </resources>

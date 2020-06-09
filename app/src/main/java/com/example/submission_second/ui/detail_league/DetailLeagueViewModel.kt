@@ -107,7 +107,6 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
     fun getPreviousMatch(leagueId: String) {
         mCompositeDisposable.add(
             api.getPreviousMatchWithId(leagueId)
-//                .map { transformPreviousData(it) }
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -124,25 +123,6 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
                     }
                 })
         )
-    }
-
-    private fun transformPreviousData(response: PreviousMatchResponse): List<PreviousMatchData> {
-        val previousMatchData = mutableListOf<PreviousMatchData>()
-        for (i in response.events) {
-            previousMatchData.add(
-                PreviousMatchData(
-                    i.idEvent,
-                    i.dateEvent.toddMMyyyy(),
-                    i.intAwayScore,
-                    i.intHomeScore,
-                    i.strAwayTeam,
-                    i.strHomeTeam,
-                    i.strLeague,
-                    i.strTime
-                )
-            )
-        }
-        return previousMatchData
     }
 
 

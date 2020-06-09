@@ -13,18 +13,21 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.submission_second.R
 import com.example.submission_second.adapter.RecyclerViewNextmatchAdapter
 import com.example.submission_second.adapter.RecyclerViewPreviousMatchAdapter
+import com.example.submission_second.adapter.TabLayoutDetailLeagueAdapter
 import com.example.submission_second.databinding.FragmentDetailLeagueBinding
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
 import com.example.submission_second.module.Api
 import com.example.submission_second.util.ViewModelFactory
+import com.google.android.material.tabs.TabLayout
 
 
 class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatchPressed,
@@ -96,7 +99,6 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
 
             }
         })
-
     }
 
     private fun loadImageGlide(strFanart1: String?) {

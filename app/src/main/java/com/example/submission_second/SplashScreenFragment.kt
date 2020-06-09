@@ -19,7 +19,6 @@ class SplashScreenFragment : Fragment() {
     ): View? {
         binding = FragmentSplashScreenBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

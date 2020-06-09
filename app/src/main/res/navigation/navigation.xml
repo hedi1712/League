@@ -41,6 +41,12 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue="null" />
+        <action
+            android:id="@+id/action_detailLeagueFragment_to_teamDetail"
+            app:destination="@id/teamDetail" />
+        <action
+            android:id="@+id/action_detailLeagueFragment_to_searchTeam"
+            app:destination="@id/searchTeam" />
     </fragment>
     <fragment
         android:id="@+id/previousMatch"
@@ -89,5 +95,36 @@
             android:id="@+id/action_favoriteFragment2_to_detailMatchFragment"
             app:destination="@id/detailMatchFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/teamDetail"
+        android:name="com.example.submission_second.ui.team_detail.TeamDetail"
+        android:label="fragment_team_detail"
+        tools:layout="@layout/fragment_team_detail" >
+        <argument
+            android:name="leagueId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteMatch"
+        android:name="com.example.submission_second.ui.favorite.favorite_match.FavoriteMatch"
+        android:label="fragment_favorite_match"
+        tools:layout="@layout/fragment_favorite_match" />
+    <fragment
+        android:id="@+id/teamFavorite"
+        android:name="com.example.submission_second.ui.favorite.favorite_team.TeamFavorite"
+        android:label="fragment_team_favorite"
+        tools:layout="@layout/fragment_team_favorite" />
+    <fragment
+        android:id="@+id/infoLeague"
+        android:name="com.example.submission_second.InfoLeague"
+        android:label="fragment_info_league"
+        tools:layout="@layout/fragment_info_league" />
+    <fragment
+        android:id="@+id/searchTeam"
+        android:name="com.example.submission_second.SearchTeam"
+        android:label="fragment_search_team"
+        tools:layout="@layout/fragment_search_team" />
 
 </navigation>

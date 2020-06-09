@@ -14,3 +14,9 @@ data class EntityFavorite(
     @ColumnInfo(name = "away_score") val awayScore: String?,
     @ColumnInfo(name = "menu_id") val menuId: Int
 )
+/**
+ * list menu ID
+ * from next match     = 1
+ * from Search         = 2
+ * from previous match =
+ */

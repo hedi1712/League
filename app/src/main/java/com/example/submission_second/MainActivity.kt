@@ -86,6 +86,11 @@ class MainActivity : AppCompatActivity(), TempToolbarTitleListener {
                     showToolbar(true)
                     showToolbarBackArrow(true)
                 }
+                R.id.searchTeam -> {
+                    showBottomNavigation(true)
+                    showToolbar(true)
+                    showToolbarBackArrow(false)
+                }
                 else -> {
                     showToolbar(false)
                     showToolbarBackArrow(false)

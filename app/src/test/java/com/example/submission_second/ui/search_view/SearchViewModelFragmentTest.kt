@@ -65,7 +65,6 @@ class SearchViewModelFragmentTest {
             .thenReturn(Observable.just(dataTest))
         with(viewModel) {
             sendQueryToApi(string)
-            mapData(dataTest)
             getSearchList.observeForever(observer)
             Assert.assertEquals(dataTest, getSearchList.value)
         }

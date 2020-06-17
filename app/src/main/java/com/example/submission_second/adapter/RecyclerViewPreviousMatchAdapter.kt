@@ -11,11 +11,10 @@ class RecyclerViewPreviousMatchAdapter(
     val listener: OnPreviousMatch
 ) :
     RecyclerView.Adapter<RecyclerViewPreviousMatchAdapter.ViewHolder>() {
-    class ViewHolder(val binding: ListPreviousMatchBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(
-            model: PreviousMatchData, position: Int, listener: OnPreviousMatch
-        ) {
+
+    class ViewHolder(val binding: ListPreviousMatchBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(model: PreviousMatchData, position: Int, listener: OnPreviousMatch)
+        {
             binding.model = model
             binding.executePendingBindings()
             binding.favorite.setOnClickListener { listener.onFavorite(model) }

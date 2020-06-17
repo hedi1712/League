@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="showData"
             type="Boolean" />
@@ -32,7 +34,6 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
@@ -109,7 +110,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_standings">
+                    app:layout_constraintTop_toBottomOf="@+id/rvClassment">
 
                     <TextView
                         android:id="@+id/textView7"
@@ -148,7 +149,7 @@
                     android:focusable="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_teams">
+                    app:layout_constraintTop_toBottomOf="@+id/rvTeams">
 
                     <TextView
                         android:id="@+id/textView2"
@@ -233,11 +234,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_standings"
+                    android:id="@+id/rvClassment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -245,13 +247,14 @@
                     tools:listitem="@layout/list_standings" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_teams"
+                    android:id="@+id/rvTeams"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toTopOf="@+id/constraintLayoutNextMatch"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -273,7 +276,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="M"
-                    app:layout_constraintBottom_toTopOf="@+id/rv_standings"
+                    app:layout_constraintBottom_toTopOf="@+id/rvClassment"
                     app:layout_constraintEnd_toStartOf="@+id/textView14"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/guideline10"
@@ -390,7 +393,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{safeUnbox(showData ? View.VISIBLE : View.INVISIBLE)}"
-            app:constraint_referenced_ids="imageView5,textView3,textView2,imageView6,leagueImage,leagueInfo,recyclerViewNextMatch,recyclerViewPreviousMatch,,,constraintLayout,textView30,rv_standings,textView7,constraintLayout2,searchView,rv_teams" />
+            app:constraint_referenced_ids="imageView5,textView3,textView2,imageView6,leagueImage,leagueInfo,recyclerViewNextMatch,recyclerViewPreviousMatch,,,constraintLayout,textView30,rvClassment,textView7,constraintLayout2,searchView,rvTeams" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="model"
-            type="com.example.submission_second.model.model.list_of_competition_team.ListOfTeamCompetitionResponse.Team" />
+            type="com.example.submission_second.model.model.list_of_competition_team.Team" />
 
     </data>
 
@@ -34,14 +34,14 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="68dp"
+            android:layout_marginStart="82dp"
+
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:gravity="center"
+            android:text="@{model.strTeam}"
             android:textAllCaps="true"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@{model.strTeam}"
             app:layout_constraintBottom_toTopOf="@+id/guideline11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -48,8 +48,7 @@ class SearchViewModelFragment(private val database: DicodingDatabase, private va
 
     fun sendQueryToApi(query: String?) {
         mCompositeDisposable.add(
-           api.getSearchMatchWithId(query!!)
-//                .map { mapData(it) }
+            api.getSearchMatchWithId(query!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<SearchMatchResponse>() {
@@ -66,30 +65,10 @@ class SearchViewModelFragment(private val database: DicodingDatabase, private va
         )
     }
 
-    fun mapData(response: SearchMatchResponse): List<SearchMatchData> {
-        val searchData = mutableListOf<SearchMatchData>()
-        for (i in response.event) {
-            if (i.strSport.equals("Soccer")) {
-                searchData.add(
-                    SearchMatchData(
-                        i.strLeague,
-                        i.strSport,
-                        i.idEvent,
-                        i.dateEvent,
-                        i.intAwayScore,
-                        i.intHomeScore,
-                        i.strAwayTeam,
-                        i.strHomeTeam
-                    )
-                )
-            }
-        }
-        return searchData
-    }
-
     fun setResult(data: SearchMatchResponse) {
         _getSearchList.postValue(data)
     }
+
 
     override fun onCleared() {
         mCompositeDisposable.dispose()

@@ -52,7 +52,7 @@ class SearchViewFragment : Fragment(), RecyclerSearch.Onclick {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val database = DicodingDatabase.buildDatabase(activity!!.applicationContext)
+        val database = DicodingDatabase.buildDatabase(requireActivity().applicationContext)
         viewModelFactory = ViewModelFactory { SearchViewModelFragment(database!!,Api.retrofitService) }
         binding = FragmentSearchViewBinding.inflate(inflater, container, false)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModelFragment::class.java)

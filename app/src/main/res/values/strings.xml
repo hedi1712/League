@@ -13,5 +13,8 @@
     <string name="delete">Delete</string>
     <string name="classment">Standings</string>
     <string name="list_team">Teams</string>
+    <string name="establish">Establish</string>
+    <string name="stadium">Stadium</string>
+    <string name="Location">Location</string>
 
 </resources>

@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.example.submission_second.api.ApiService
 import com.example.submission_second.db.DicodingDatabase
 import com.example.submission_second.db.entity.EntityFavorite
+import com.example.submission_second.model.model.classment.ClassmentResponse
 import com.example.submission_second.model.model.league_detail.LeagueDetailResponse
+import com.example.submission_second.model.model.list_of_competition_team.ListOfTeamCompetitionResponse
 import com.example.submission_second.model.model.next_match.Event
 import com.example.submission_second.model.model.next_match.NextMatchResponse
 import com.example.submission_second.model.model.previous_match.PreviousMatchData
@@ -35,6 +37,14 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
         MutableLiveData<PreviousMatchResponse>()
     val getPreviousMatch: LiveData<PreviousMatchResponse>
         get() = _getPreviousMatch
+
+    private val _getClassement = MutableLiveData<ClassmentResponse>()
+    val getClassment: LiveData<ClassmentResponse>
+        get() = _getClassement
+
+    private val _getTeamLeague = MutableLiveData<ListOfTeamCompetitionResponse>()
+    val getTeamLeague: LiveData<ListOfTeamCompetitionResponse>
+        get() = _getTeamLeague
 
     private val _getMessage = MutableLiveData<String>()
     val getMessage: LiveData<String>
@@ -85,25 +95,6 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
         )
     }
 
-    private fun transformNextData(response: NextMatchResponse): List<Event> {
-        val nextMatchData = mutableListOf<Event>()
-        for (i in response.events) {
-            nextMatchData.add(
-                Event(
-                    i.idEvent,
-                    i.dateEvent.toddMMyyyy(),
-                    i.intAwayScore,
-                    i.intHomeScore,
-                    i.strAwayTeam,
-                    i.strHomeTeam,
-                    i.strLeague,
-                    i.strTime
-                )
-            )
-        }
-        return nextMatchData
-    }
-
     fun getPreviousMatch(leagueId: String) {
         mCompositeDisposable.add(
             api.getPreviousMatchWithId(leagueId)
@@ -125,6 +116,45 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
         )
     }
 
+    fun getClassmentLeague(leagueId: String) {
+        mCompositeDisposable.add(
+            api.getListClassmentWithId(leagueId)
+                .doOnSubscribe { ProgressBar.VISIBLE }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<ClassmentResponse>() {
+                    override fun onComplete() {
+                    }
+
+                    override fun onNext(response: ClassmentResponse) {
+                        response.let { listClassment(it) }
+                    }
+
+                    override fun onError(e: Throwable) {
+                    }
+                })
+        )
+    }
+
+    fun getListTeamLeague(leagueId: String) {
+        mCompositeDisposable.add(
+            api.getListTeamWithId(leagueId)
+                .doOnSubscribe { ProgressBar.VISIBLE }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<ListOfTeamCompetitionResponse>() {
+                    override fun onComplete() {
+                    }
+
+                    override fun onNext(response: ListOfTeamCompetitionResponse) {
+                        response.let { listTeamLeague(it) }
+                    }
+
+                    override fun onError(e: Throwable) {
+                    }
+                })
+        )
+    }
 
     fun storeToDatabaseNextMatch(searchData: Event) {
         val data = EntityFavorite(
@@ -168,12 +198,20 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
         _getNextMatch.postValue(events)
     }
 
-    fun setResultLeagueList(leagueDetailData: LeagueDetailResponse) {
-        _getDetailLeague.postValue(leagueDetailData)
-    }
-
     fun listPreviousMatch(leagueDetailData: PreviousMatchResponse) {
         _getPreviousMatch.postValue(leagueDetailData)
+    }
+
+    fun listClassment(events: ClassmentResponse) {
+        _getClassement.postValue(events)
+    }
+
+    fun listTeamLeague(events: ListOfTeamCompetitionResponse) {
+        _getTeamLeague.postValue(events)
+    }
+
+    fun setResultLeagueList(leagueDetailData: LeagueDetailResponse) {
+        _getDetailLeague.postValue(leagueDetailData)
     }
 
     override fun onCleared() {

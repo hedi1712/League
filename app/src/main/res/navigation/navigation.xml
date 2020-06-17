@@ -66,6 +66,9 @@
         <action
             android:id="@+id/actionLaunchSearchViewToDetailMatchFragment"
             app:destination="@id/detailMatchFragment" />
+        <action
+            android:id="@+id/action_searchView_to_teamDetail"
+            app:destination="@id/teamDetail" />
     </fragment>
     <fragment
         android:id="@+id/detailMatchFragment"
@@ -123,8 +126,12 @@
         tools:layout="@layout/fragment_info_league" />
     <fragment
         android:id="@+id/searchTeam"
-        android:name="com.example.submission_second.SearchTeam"
+        android:name="com.example.submission_second.ui.search_team.SearchTeam"
         android:label="fragment_search_team"
-        tools:layout="@layout/fragment_search_team" />
+        tools:layout="@layout/fragment_search_team" >
+        <action
+            android:id="@+id/action_searchTeam_to_teamDetail"
+            app:destination="@id/teamDetail" />
+    </fragment>
 
 </navigation>

@@ -6,14 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.submission_second.databinding.ListNextMatchBinding
 import com.example.submission_second.model.model.next_match.Event
 
-class RecyclerViewNextmatchAdapter(
-    var nextmatch: List<Event>,
-    var listerner: OnNextMatchPressed
-) :
-    RecyclerView.Adapter<RecyclerViewNextmatchAdapter.ViewHolder>() {
-
-    class ViewHolder(val binding: ListNextMatchBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+class RecyclerViewNextmatchAdapter(var nextmatch: List<Event>, var listerner: OnNextMatchPressed) : RecyclerView.Adapter<RecyclerViewNextmatchAdapter.ViewHolder>()
+{
+    class ViewHolder(val binding: ListNextMatchBinding) : RecyclerView.ViewHolder(binding.root)
+    {
         fun bind(model: Event, position: Int, listerner: OnNextMatchPressed) {
             binding.model = model
             binding.executePendingBindings()

@@ -1,13 +1,17 @@
 package com.example.submission_second.api
 
+import com.example.submission_second.model.model.classment.ClassmentResponse
 import com.example.submission_second.model.model.detail_match.DetailMatchResponse
 import com.example.submission_second.model.model.detail_match.GetBadgeAwayTeamResponse
 import com.example.submission_second.model.model.detail_match.GetBadgeHomeTeamResponse
+import com.example.submission_second.model.model.detail_team.DetailTeamResponse
 import com.example.submission_second.model.model.league_detail.LeagueDetailResponse
 import com.example.submission_second.model.model.league_list.LeagueListResponse
+import com.example.submission_second.model.model.list_of_competition_team.ListOfTeamCompetitionResponse
 import com.example.submission_second.model.model.next_match.NextMatchResponse
 import com.example.submission_second.model.model.previous_match.PreviousMatchResponse
 import com.example.submission_second.model.model.search_match.SearchMatchResponse
+import com.example.submission_second.model.model.search_team.SearchTeamResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -38,11 +42,15 @@ interface ApiService {
     fun getBadgeAwayWithId(@Query("id") id: String): Observable<GetBadgeAwayTeamResponse>
 
     @GET("lookup_all_teams.php")
-    fun getListTeamWithId(@Query("id") id: String): Observable<GetBadgeAwayTeamResponse>
+    fun getListTeamWithId(@Query("id") id: String): Observable<ListOfTeamCompetitionResponse>
 
-//    @GET("lookup_all_teams.php")
-//    fun getListTeamWithId(@Query("id") id: String): Observable<GetBadgeAwayTeamResponse>
+    @GET("lookuptable.php")
+    fun getListClassmentWithId(@Query("l") id: String): Observable<ClassmentResponse>
 
+    @GET("searchteams.php")
+    fun getSearchListTeam(@Query("t") id: String): Observable<SearchTeamResponse>
 
+    @GET("lookupteam.php")
+    fun getDetailTeam(@Query("id") id: String?): Observable<DetailTeamResponse>
 
 }

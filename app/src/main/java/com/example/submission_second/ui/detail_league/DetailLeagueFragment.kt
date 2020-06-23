@@ -49,16 +49,9 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
         savedInstanceState: Bundle?
     ): View? {
         val database = DicodingDatabase.buildDatabase(requireActivity().applicationContext)
-        viewModelFactory =
-            ViewModelFactory { DetailLeagueViewModel(database!!, Api.retrofitService) }
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(DetailLeagueViewModel::class.java)
+        viewModelFactory = ViewModelFactory { DetailLeagueViewModel(database!!, Api.retrofitService) }
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailLeagueViewModel::class.java)
         binding = FragmentDetailLeagueBinding.inflate(inflater, container, false)
-        viewModel.getMessage.observe(viewLifecycleOwner, Observer {
-            it.let {
-                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-            }
-        })
         binding.executePendingBindings()
         return binding.root
     }
@@ -125,6 +118,11 @@ class DetailLeagueFragment : Fragment(), RecyclerViewNextmatchAdapter.OnNextMatc
                     passDataToAdapterTeamLeague(it.teams)
                 }
 
+            }
+        })
+        viewModel.getMessage.observe(viewLifecycleOwner, Observer {
+            it.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
             }
         })
     }

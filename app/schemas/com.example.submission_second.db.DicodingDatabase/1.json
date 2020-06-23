@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "77be8e921430d8c7407fd16b6bcb4bad",
+    "identityHash": "17fa40c3feceadec725e2c5d3f0b48e6",
     "entities": [
       {
         "tableName": "favorite_club",
@@ -59,12 +59,50 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "favorite_team",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTeam` TEXT NOT NULL, `description` TEXT, `strbadge` TEXT, `team_name` TEXT, PRIMARY KEY(`idTeam`))",
+        "fields": [
+          {
+            "fieldPath": "idTeam",
+            "columnName": "idTeam",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "badge",
+            "columnName": "strbadge",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "team_name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idTeam"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '77be8e921430d8c7407fd16b6bcb4bad')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '17fa40c3feceadec725e2c5d3f0b48e6')"
     ]
   }
 }

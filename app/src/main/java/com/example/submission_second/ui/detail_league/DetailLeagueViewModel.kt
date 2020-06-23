@@ -74,7 +74,6 @@ class DetailLeagueViewModel(private val database: DicodingDatabase, private val 
     fun getNextMatchData(leagueId: String) {
         mCompositeDisposable.add(
             api.getNextMatchWithId(leagueId)
-//                .map { transformNextData(it) }
                 .doOnSubscribe { ProgressBar.VISIBLE }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

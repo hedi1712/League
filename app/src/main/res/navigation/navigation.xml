@@ -97,6 +97,9 @@
         <action
             android:id="@+id/action_favoriteFragment2_to_detailMatchFragment"
             app:destination="@id/detailMatchFragment" />
+        <action
+            android:id="@+id/action_favoriteFragment2_to_teamDetail"
+            app:destination="@id/teamDetail" />
     </fragment>
     <fragment
         android:id="@+id/teamDetail"

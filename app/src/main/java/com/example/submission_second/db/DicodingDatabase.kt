@@ -20,7 +20,7 @@ abstract class DicodingDatabase : RoomDatabase() {
                 synchronized(DicodingDatabase::class) {
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext, DicodingDatabase::class.java,
-                        "favorite.db"
+                        "Dicoding.db"
                     ).build()
                 }
             }
